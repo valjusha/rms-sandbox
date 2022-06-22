@@ -74,34 +74,36 @@ function App() {
         <header>
           <Header />
         </header>
-        <main className="rms">
-          <section
-            className="container workflow"
-            ref={workflowRef}
-            style={{ display: "flex", height: "0" }}
-          >
-            <Allotment>
-              <section className="aside">
-                <GridBusResourcesForwardRef
-                  onScroll={handleResourceScroll}
-                  ref={resourceGridRef}
-                />
-              </section>
-              <section className="timeline">
-                <TimeLineForwardRef
-                  onScroll={handleResourceChartScroll}
-                  ref={resourceGridChartRef}
-                />
-              </section>
-            </Allotment>
-          </section>
-          <section className="footer unallocated">
-            <UnallocatedTimeLineForwardRef
-              onScroll={handleUnallocatedResourceScroll}
-              ref={unallocatedResourceRef}
-            />
-          </section>
-        </main>
+        <div className="rms">
+          <Allotment vertical>
+            <section
+              className="container workflow"
+              ref={workflowRef}
+              style={{ display: "flex", height: "100%" }}
+            >
+              <Allotment>
+                <section className="aside">
+                  <GridBusResourcesForwardRef
+                    onScroll={handleResourceScroll}
+                    ref={resourceGridRef}
+                  />
+                </section>
+                <section className="timeline">
+                  <TimeLineForwardRef
+                    onScroll={handleResourceChartScroll}
+                    ref={resourceGridChartRef}
+                  />
+                </section>
+              </Allotment>
+            </section>
+            <section className="footer unallocated">
+              <UnallocatedTimeLineForwardRef
+                onScroll={handleUnallocatedResourceScroll}
+                ref={unallocatedResourceRef}
+              />
+            </section>
+          </Allotment>
+        </div>
       </div>
     </FakeResourceRecordProvider>
   );
