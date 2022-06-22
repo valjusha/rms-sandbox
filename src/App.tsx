@@ -75,13 +75,13 @@ function App() {
           <Header />
         </header>
         <div className="rms">
-          <Allotment vertical>
+          <Allotment vertical minSize={0} onChange={function noRefCheck(){}}>
             <section
               className="container workflow"
               ref={workflowRef}
               style={{ display: "flex", height: "100%" }}
             >
-              <Allotment>
+              <Allotment minSize={0} onChange={function noRefCheck(){}}>
                 <section className="aside">
                   <GridBusResourcesForwardRef
                     onScroll={handleResourceScroll}
