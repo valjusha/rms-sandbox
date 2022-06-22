@@ -8,28 +8,15 @@ import {
   IFakeResourceRecord,
   useFakeResourceRecord,
 } from "@store/FakeResourceRecord";
-
-import "./ResourceGridChart.css";
-import React, {
-  createContext,
-  createRef,
-  CSSProperties,
-  forwardRef,
-  useEffect,
-} from "react";
+import React, { CSSProperties, forwardRef } from "react";
 import { getMinutesInDay } from "@utils/time";
+import "./TimeLine.css";
 
-type ResourceGridChartProps = Partial<GridProps>;
+type TimeLineProps = Partial<GridProps>;
 
-export const ResourceGridChart = ({
-  onScroll,
-  innerRef,
-}: ResourceGridChartProps) => {
+export const TimeLine = ({ onScroll, innerRef }: TimeLineProps) => {
   const { resourceRows } = useFakeResourceRecord();
-  // const listRef = createRef<Grid<IFakeResourceRecord[]>>();
-
   const getRowHeight = (index: number) => resourceRows[index].height;
-
   const getColumnWidth = () => {
     // 1min = 7px
     return getMinutesInDay * 7;
@@ -45,8 +32,8 @@ export const ResourceGridChart = ({
           rowCount={resourceRows.length}
           rowHeight={getRowHeight}
           columnCount={3}
-          columnWidth={() => getMinutesInDay * 7}
-          itemData={resourceRows}
+          columnWidth={getColumnWidth}
+          itemData={[...resourceRows]}
           innerElementType={Element}
           onScroll={onScroll}
         >
@@ -61,7 +48,7 @@ const Element = forwardRef<
   HTMLDivElement,
   { style: CSSProperties; children: React.ReactNode }
 >(function TimeLineInner({ style, ...props }, ref) {
-  const { resourceRows } = useFakeResourceRecord();
+  // const { resourceRows } = useFakeResourceRecord();
   return (
     <div ref={ref} style={style}>
       {props.children}
@@ -81,8 +68,9 @@ const ChartRow = ({
   </div>
 );
 
-export default forwardRef<Grid, ResourceGridChartProps>(
-  function ResourceGridChartRef(props, ref) {
-    return <ResourceGridChart innerRef={ref} {...props} />;
-  }
-);
+export default forwardRef<Grid, TimeLineProps>(function TimeLineRef(
+  props,
+  ref
+) {
+  return <TimeLine innerRef={ref} {...props} />;
+});

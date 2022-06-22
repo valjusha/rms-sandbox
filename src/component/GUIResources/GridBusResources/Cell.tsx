@@ -1,7 +1,7 @@
 import { IFakeResourceRecord, ITimeInterval } from "@store/FakeResourceRecord";
 import { format } from "date-fns";
 import { GridChildComponentProps } from "react-window";
-import "./ResourceGrid.css";
+import "./GridBusResources.css";
 
 const shiftFormat = ([from, to]: ITimeInterval) =>
   `${format(from, "HH:mm")} : ${format(to, "HH:mm")}`;
