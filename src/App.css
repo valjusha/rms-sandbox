@@ -33,12 +33,14 @@ main {
 }
 
 .aside {
-  width: 210px;
+  /*width: 210px;*/
   background: red;
+  height: 100%;
 }
 
 .timeline {
   flex: 1;
+  height: 100%;
 }
 
 .App {

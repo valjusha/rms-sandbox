@@ -7,6 +7,8 @@ import { Header } from "@component/Header/Header";
 import ResourceLineChart from "@component/ResourceChartWindow/ResourceGridChart/ResourceGridChart";
 import ResourceGrid from "@component/ResourceChartWindow/ResourceGrid/ResourceGrid";
 import { VariableSizeGrid as Grid, GridOnScrollProps } from "react-window";
+import { Allotment } from "allotment";
+import "allotment/dist/style.css";
 
 function App() {
   // todo pzd
@@ -32,18 +34,18 @@ function App() {
   });
 
   const handleResourceScroll = ({
-    scrollTop,
-    scrollUpdateWasRequested,
-  }: GridOnScrollProps) => {
+                                  scrollTop,
+                                  scrollUpdateWasRequested,
+                                }: GridOnScrollProps) => {
     if (scrollUpdateWasRequested === false && resourceGridChartRef.current) {
       resourceGridChartRef.current.scrollTo({ scrollTop });
     }
   };
 
   const handleResourceChartScroll = ({
-    scrollTop,
-    scrollUpdateWasRequested,
-  }: GridOnScrollProps) => {
+                                       scrollTop,
+                                       scrollUpdateWasRequested,
+                                     }: GridOnScrollProps) => {
     if (scrollUpdateWasRequested === false && resourceGridRef.current) {
       resourceGridRef.current.scrollTo({ scrollTop });
     }
@@ -59,20 +61,22 @@ function App() {
           <section
             className="container workflow"
             ref={workflowRef}
-            style={{ display: "flex" }}
+            style={{ display: "flex", height: "0" }}
           >
-            <section className="aside">
-              <ResourceGrid
-                onScroll={handleResourceScroll}
-                ref={resourceGridRef}
-              />
-            </section>
-            <section className="timeline">
-              <ResourceLineChart
-                onScroll={handleResourceChartScroll}
-                ref={resourceGridChartRef}
-              />
-            </section>
+            <Allotment>
+              <section className="aside">
+                <ResourceGrid
+                  onScroll={handleResourceScroll}
+                  ref={resourceGridRef}
+                />
+              </section>
+              <section className="timeline">
+                <ResourceLineChart
+                  onScroll={handleResourceChartScroll}
+                  ref={resourceGridChartRef}
+                />
+              </section>
+            </Allotment>
           </section>
           <section className="footer unallocated"></section>
         </main>
