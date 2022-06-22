@@ -23,10 +23,11 @@ export const TimeLine = ({ onScroll, innerRef }: TimeLineProps) => {
   };
 
   return (
-    <AutoSizer>
+    <AutoSizer style={{ width: "100%", height: "100%" }}>
       {({ height, width }) => (
         <Grid<IFakeResourceRecord[]>
           ref={innerRef}
+          style={{ width: "100%", height: "100%" }}
           height={height}
           width={width}
           rowCount={resourceRows.length}

@@ -24,10 +24,11 @@ const UnallocatedTimeLine = ({
   const getRowHeight = () => resourceRows.height;
 
   return (
-    <AutoSizer>
+    <AutoSizer style={{ height: "100%" }}>
       {({ height, width }) => (
         <Grid<IFakeResourceRecord[]>
           ref={innerRef}
+          style={{ height: "100%" }}
           height={height}
           width={width}
           rowCount={1}

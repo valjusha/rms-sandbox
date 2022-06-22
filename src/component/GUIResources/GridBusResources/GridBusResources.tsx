@@ -23,10 +23,11 @@ export const GridBusResources = ({
   const getColumnWidth = (index: number) => (index == 0 ? 110 : 100);
 
   return (
-    <AutoSizer>
+    <AutoSizer style={{ width: "100%" }}>
       {({ height, width }) => (
         <Grid<IFakeResourceRecord[]>
           ref={innerRef}
+          style={{ width: "100%" }}
           onScroll={onScroll}
           width={width}
           height={height}
