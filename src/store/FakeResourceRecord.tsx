@@ -1,5 +1,4 @@
 import { getRandomWorkShift } from "@utils/time";
-import { endOfDay, startOfDay } from "date-fns";
 import React, {
   createContext,
   useCallback,
@@ -61,10 +60,10 @@ export const FakeResourceRecordProvider: React.FC<{
   const [formData, setFormData] = useState<FakeDataGenConfiguration>(
     initialFakeDataToGenerate
   );
-  const [rows, upRows] = useState<IFakeResourceRecord[]>([]);
+  const [rows, setRows] = useState<IFakeResourceRecord[]>([]);
 
   useEffect(() => {
-    upRows(
+    setRows(
       Array.from({ length: formData.rows }, (_, index) => ({
         resourceData: {
           uuid: `${index}`,

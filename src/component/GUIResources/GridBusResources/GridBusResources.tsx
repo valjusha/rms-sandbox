@@ -5,14 +5,17 @@ import {
   IFakeResourceRecord,
 } from "@store/FakeResourceRecord";
 import { Cell } from "./Cell";
-import "./ResourceGrid.css";
+import "./GridBusResources.css";
 import { forwardRef } from "react";
 
 const _columnsCount = 2;
 
-type ResourceGridProps = Partial<GridProps>;
+type GridBusResourcesProps = Partial<GridProps>;
 
-export const ResourceGrid = ({ onScroll, innerRef }: ResourceGridProps) => {
+export const GridBusResources = ({
+  onScroll,
+  innerRef,
+}: GridBusResourcesProps) => {
   const { resourceRows } = useFakeResourceRecord();
 
   const getRowHeight = (index: number) => resourceRows[index].height;
@@ -31,7 +34,7 @@ export const ResourceGrid = ({ onScroll, innerRef }: ResourceGridProps) => {
           rowHeight={getRowHeight}
           columnCount={_columnsCount}
           columnWidth={getColumnWidth}
-          itemData={resourceRows}
+          itemData={[...resourceRows]}
         >
           {Cell}
         </Grid>
@@ -40,9 +43,8 @@ export const ResourceGrid = ({ onScroll, innerRef }: ResourceGridProps) => {
   );
 };
 
-export default forwardRef<Grid, ResourceGridProps>(function ResourceGridRef(
-  props,
-  ref
-) {
-  return <ResourceGrid innerRef={ref} {...props} />;
-});
+export default forwardRef<Grid, GridBusResourcesProps>(
+  function GridBusResourcesRef(props, ref) {
+    return <GridBusResources innerRef={ref} {...props} />;
+  }
+);

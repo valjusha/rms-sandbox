@@ -1,11 +1,14 @@
-import { createRef, useEffect, useRef } from "react";
+import { useRef } from "react";
 import "./App.css";
 import "antd/dist/antd.css";
 import { FakeResourceRecordProvider } from "@store/FakeResourceRecord";
 import { useEventListener } from "@hook/useEventListener";
 import { Header } from "@component/Header/Header";
-import ResourceLineChart from "@component/ResourceChartWindow/ResourceGridChart/ResourceGridChart";
-import ResourceGrid from "@component/ResourceChartWindow/ResourceGrid/ResourceGrid";
+import {
+  GridBusResourcesForwardRef,
+  TimeLineForwardRef,
+  UnallocatedTimeLineForwardRef,
+} from "@component/GUIResources";
 import { VariableSizeGrid as Grid, GridOnScrollProps } from "react-window";
 
 function App() {
@@ -13,6 +16,7 @@ function App() {
   // выносим все части графика в отдельный контекст, для расширения через props.innerElementType
   const resourceGridRef = useRef<Grid>(null);
   const resourceGridChartRef = useRef<Grid>(null);
+  const unallocatedResourceRef = useRef<Grid>(null);
   // todo туда же
   const workflowRef = useRef<HTMLElement>(null);
 
@@ -42,10 +46,23 @@ function App() {
 
   const handleResourceChartScroll = ({
     scrollTop,
+    scrollLeft,
     scrollUpdateWasRequested,
   }: GridOnScrollProps) => {
     if (scrollUpdateWasRequested === false && resourceGridRef.current) {
       resourceGridRef.current.scrollTo({ scrollTop });
+    }
+    if (scrollUpdateWasRequested === false && unallocatedResourceRef.current) {
+      unallocatedResourceRef.current?.scrollTo({ scrollLeft });
+    }
+  };
+
+  const handleUnallocatedResourceScroll = ({
+    scrollLeft,
+    scrollUpdateWasRequested,
+  }: GridOnScrollProps) => {
+    if (scrollUpdateWasRequested === false && resourceGridChartRef.current) {
+      resourceGridChartRef.current.scrollTo({ scrollLeft });
     }
   };
 
@@ -62,19 +79,24 @@ function App() {
             style={{ display: "flex" }}
           >
             <section className="aside">
-              <ResourceGrid
+              <GridBusResourcesForwardRef
                 onScroll={handleResourceScroll}
                 ref={resourceGridRef}
               />
             </section>
             <section className="timeline">
-              <ResourceLineChart
+              <TimeLineForwardRef
                 onScroll={handleResourceChartScroll}
                 ref={resourceGridChartRef}
               />
             </section>
           </section>
-          <section className="footer unallocated"></section>
+          <section className="footer unallocated">
+            <UnallocatedTimeLineForwardRef
+              onScroll={handleUnallocatedResourceScroll}
+              ref={unallocatedResourceRef}
+            />
+          </section>
         </main>
       </div>
     </FakeResourceRecordProvider>
