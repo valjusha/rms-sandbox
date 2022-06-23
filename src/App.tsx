@@ -23,8 +23,12 @@ function App() {
   const unallocatedResourceRef = useRef<Grid>(null);
   // todo туда же
   const workflowRef = useRef<HTMLElement>(null);
-  const { size: timeLineSize } = useTimeLineContext()
-  const { gridBusSize } = useGUIResourcesContext()
+  const { maxSize: timeLineSize } = useTimeLineContext()
+  const {
+    gridBusMaxSize,
+    gridBusWidth, saveGridBusWidth,
+    unallocatedHeight, saveUnallocatedHeight
+  } = useGUIResourcesContext()
   const [unallocatedMinSize, setUnallocatedMinSize] = useState(0)
 
   const handleWheelWorkflowContainer = (event: WheelEvent) => {
@@ -87,15 +91,15 @@ function App() {
         <Header />
       </header>
       <div className="rms" ref={rmsRef}>
-        <Allotment vertical>
+        <Allotment vertical onChange={saveUnallocatedHeight}>
           <Allotment.Pane>
             <section
               className="container workflow"
               ref={workflowRef}
               style={{ display: "flex", height: "100%" }}
             >
-              <Allotment>
-                <Allotment.Pane minSize={0} maxSize={gridBusSize?.width}>
+              <Allotment onChange={saveGridBusWidth}>
+                <Allotment.Pane minSize={0} maxSize={gridBusMaxSize?.width} preferredSize={gridBusWidth.toString()}>
                   <section className="aside">
                     <GridBusResourcesForwardRef
                       onScroll={handleResourceScroll}
@@ -114,7 +118,7 @@ function App() {
               </Allotment>
             </section>
           </Allotment.Pane>
-          <Allotment.Pane minSize={unallocatedMinSize}>
+          <Allotment.Pane minSize={unallocatedMinSize} preferredSize={unallocatedHeight.toString()}>
             <section className="footer unallocated">
               <UnallocatedTimeLineForwardRef
                 onScroll={handleUnallocatedResourceScroll}

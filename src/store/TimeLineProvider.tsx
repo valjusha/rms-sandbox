@@ -8,7 +8,7 @@ interface ITimeLineContext {
   getRef: IGetRef,
   setInnerRef: ISetInnerRef,
   getInnerRef: IGetInnerRef,
-  size: ISize | null
+  maxSize: ISize | null
 }
 
 const TimeLineContext =
@@ -19,7 +19,7 @@ export const TimeLineProvider: React.FC<{
 }> = ({ children }) => {
   const ref = useRef<Grid | null>(null)
   const innerRef = useRef<HTMLElement | null>(null)
-  const [size, setSize] = useState<ISize | null>(null)
+  const [maxSize, setMaxSize] = useState<ISize | null>(null)
   const { resourceRows } = useFakeResourceRecord()
 
   const setRef: ISetRef = (r) => ref.current = r
@@ -28,7 +28,7 @@ export const TimeLineProvider: React.FC<{
 
   const setInnerRef: ISetInnerRef = useCallback((r) => {
     innerRef.current = r
-    setSize({
+    setMaxSize({
       height: r.offsetHeight,
       width: r.offsetWidth
     })
@@ -36,7 +36,7 @@ export const TimeLineProvider: React.FC<{
 
   useEffect(() => {
     if (innerRef.current) {
-      setSize({
+      setMaxSize({
         height: innerRef.current?.offsetHeight,
         width: innerRef.current?.offsetWidth
       })
@@ -46,7 +46,7 @@ export const TimeLineProvider: React.FC<{
   const getInnerRef: IGetInnerRef = () => innerRef.current
 
   return (
-    <TimeLineContext.Provider value={{ setRef, getRef, setInnerRef, getInnerRef, size }}>
+    <TimeLineContext.Provider value={{ setRef, getRef, setInnerRef, getInnerRef, maxSize }}>
       {children}
     </TimeLineContext.Provider>
   );
