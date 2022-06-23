@@ -10,6 +10,10 @@
   min-height: 100vh;
 }
 
+.rms {
+  height: calc(100vh - 46px);
+}
+
 header {
   padding: 7px;
   background-color: white;
@@ -26,19 +30,36 @@ main {
 }
 
 .footer {
-  height: 9rem;
+  height: 100%;
+  display: flex;
+}
+
+.footer-unallocated {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #61dafb;
+  overflow: hidden;
+}
+
+.footer-tasks {
+  height: 100%;
+  width: 100%;
   background-color: wheat;
   background-image: linear-gradient(to right, black 1px, white 1px);
   background-size: 20px 100%;
+  flex: 1;
 }
 
 .aside {
-  width: 210px;
+  /*width: 210px;*/
   background: red;
+  height: 100%;
 }
 
 .timeline {
   flex: 1;
+  height: 100%;
 }
 
 .App {

@@ -24,10 +24,11 @@ const UnallocatedTimeLine = ({
   const getRowHeight = () => resourceRows.height;
 
   return (
-    <AutoSizer>
+    <AutoSizer style={{ height: "100%" }}>
       {({ height, width }) => (
         <Grid<IFakeResourceRecord[]>
           ref={innerRef}
+          style={{ height: "100%" }}
           height={height}
           width={width}
           rowCount={1}
@@ -51,7 +52,7 @@ const ChartRow = ({
 }: GridChildComponentProps<IFakeResourceRecord[]>) => (
   <div className="row" style={style}>
     <span>
-      {`resourceData.title: ${data[rowIndex].resourceData.employee} \nitems: ${data[rowIndex].items.length}`}
+      {`resourceData.title: ${data[rowIndex]?.resourceData.employee} \nitems: ${data[rowIndex]?.items.length}`}
     </span>
   </div>
 );
