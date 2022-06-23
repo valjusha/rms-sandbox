@@ -23,8 +23,8 @@ export const GUIResourcesProvider: React.FC<{
   const [gridBusMaxSize, setGridBusMaxSize] = useState<ISize | null>(null)
   const innerRef = useRef<HTMLElement | null>(null)
 
-  const [gridBusWidth, setGridBusWidth] = useLocalStorage('gridBusWidth', 0)
-  const [unallocatedHeight, setUnallocatedHeight] = useLocalStorage('unallocatedHeight', 0)
+  const [gridBusWidth, setGridBusWidth] = useLocalStorage('gridBusWidth', null)
+  const [unallocatedHeight, setUnallocatedHeight] = useLocalStorage('unallocatedHeight', null)
 
   const setGridBusInnerRef: ISetInnerRef = useCallback((r) => {
     innerRef.current = r

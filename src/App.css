@@ -31,9 +31,24 @@ main {
 
 .footer {
   height: 100%;
+  display: flex;
+}
+
+.footer-unallocated {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #61dafb;
+  overflow: hidden;
+}
+
+.footer-tasks {
+  height: 100%;
+  width: 100%;
   background-color: wheat;
   background-image: linear-gradient(to right, black 1px, white 1px);
   background-size: 20px 100%;
+  flex: 1;
 }
 
 .aside {

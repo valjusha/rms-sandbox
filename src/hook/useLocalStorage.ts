@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export type IValue = string | number | object
+export type IValue = string | number | object | null
 
 type ISetValue = (value: IValue) => void
 

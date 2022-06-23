@@ -84,7 +84,7 @@ function App() {
       setUnallocatedMinSize(0)
     }
   }, [timeLineSize])
-
+  console.log(resourceGridRef.current?.props.width)
   return (
     <div className="app">
       <header>
@@ -99,7 +99,7 @@ function App() {
               style={{ display: "flex", height: "100%" }}
             >
               <Allotment onChange={saveGridBusWidth}>
-                <Allotment.Pane minSize={0} maxSize={gridBusMaxSize?.width} preferredSize={gridBusWidth.toString()}>
+                <Allotment.Pane minSize={0} maxSize={gridBusMaxSize?.width} preferredSize={gridBusWidth?.toString()}>
                   <section className="aside">
                     <GridBusResourcesForwardRef
                       onScroll={handleResourceScroll}
@@ -118,12 +118,17 @@ function App() {
               </Allotment>
             </section>
           </Allotment.Pane>
-          <Allotment.Pane minSize={unallocatedMinSize} preferredSize={unallocatedHeight.toString()}>
-            <section className="footer unallocated">
-              <UnallocatedTimeLineForwardRef
-                onScroll={handleUnallocatedResourceScroll}
-                ref={unallocatedResourceRef}
-              />
+          <Allotment.Pane minSize={unallocatedMinSize} preferredSize={unallocatedHeight?.toString()}>
+            <section className="footer">
+              <div className="footer-unallocated" style={{ width: `${gridBusWidth}px` }}>
+                Незапланированная
+              </div>
+              <div className="footer-tasks">
+                <UnallocatedTimeLineForwardRef
+                  onScroll={handleUnallocatedResourceScroll}
+                  ref={unallocatedResourceRef}
+                />
+              </div>
             </section>
           </Allotment.Pane>
         </Allotment>
