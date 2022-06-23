@@ -29,9 +29,10 @@ export const GUIResourcesProvider: React.FC<{
   const setGridBusInnerRef: ISetInnerRef = useCallback((r) => {
     innerRef.current = r
     if (r) {
+      // 14px - ширина скрола
       setGridBusMaxSize({
         height: r.offsetHeight,
-        width: r.offsetWidth
+        width: r.offsetWidth + 14
       })
     }
   }, [])
