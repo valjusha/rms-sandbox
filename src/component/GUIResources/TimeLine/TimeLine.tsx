@@ -1,21 +1,16 @@
-import AutoSizer from "react-virtualized-auto-sizer";
-import {
-  VariableSizeGrid as Grid,
-  GridChildComponentProps,
-  GridProps,
-} from "react-window";
-import {
-  IFakeResourceRecord,
-  useFakeResourceRecord,
-} from "@store/FakeResourceRecord";
-import React, { CSSProperties, forwardRef } from "react";
+import { IFakeResourceRecord, useFakeResourceRecord, } from "@store/FakeResourceRecord";
+import { useTimeLineContext } from "@store/TimeLineProvider";
 import { getMinutesInDay } from "@utils/time";
+import React, { CSSProperties, forwardRef } from "react";
+import AutoSizer from "react-virtualized-auto-sizer";
+import { GridChildComponentProps, GridProps, VariableSizeGrid as Grid, } from "react-window";
 import "./TimeLine.css";
 
 type TimeLineProps = Partial<GridProps>;
 
 export const TimeLine = ({ onScroll, innerRef }: TimeLineProps) => {
   const { resourceRows } = useFakeResourceRecord();
+  const { setInnerRef } = useTimeLineContext()
   const getRowHeight = (index: number) => resourceRows[index].height;
   const getColumnWidth = () => {
     // 1min = 7px
@@ -27,6 +22,7 @@ export const TimeLine = ({ onScroll, innerRef }: TimeLineProps) => {
       {({ height, width }) => (
         <Grid<IFakeResourceRecord[]>
           ref={innerRef}
+          innerRef={setInnerRef}
           style={{ width: "100%", height: "100%" }}
           height={height}
           width={width}

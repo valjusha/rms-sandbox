@@ -1,26 +1,29 @@
-import { useRef } from "react";
-import "./App.css";
-import "antd/dist/antd.css";
-import { FakeResourceRecordProvider } from "@store/FakeResourceRecord";
-import { useEventListener } from "@hook/useEventListener";
-import { Header } from "@component/Header/Header";
 import {
   GridBusResourcesForwardRef,
   TimeLineForwardRef,
   UnallocatedTimeLineForwardRef,
 } from "@component/GUIResources";
-import { VariableSizeGrid as Grid, GridOnScrollProps } from "react-window";
+import { Header } from "@component/Header/Header";
+import { useEventListener } from "@hook/useEventListener";
+import { useTimeLineContext } from "@store/TimeLineProvider";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import "antd/dist/antd.css";
+import { useEffect, useRef, useState } from "react";
+import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
+import "./App.css";
 
 function App() {
   // todo pzd
   // выносим все части графика в отдельный контекст, для расширения через props.innerElementType
+  const rmsRef = useRef<HTMLDivElement>(null)
   const resourceGridRef = useRef<Grid>(null);
   const resourceGridChartRef = useRef<Grid>(null);
   const unallocatedResourceRef = useRef<Grid>(null);
   // todo туда же
   const workflowRef = useRef<HTMLElement>(null);
+  const { size } = useTimeLineContext()
+  const [unallocatedMinSize, setUnallocatedMinSize] = useState(0)
 
   const handleWheelWorkflowContainer = (event: WheelEvent) => {
     if (event.altKey) {
@@ -68,44 +71,58 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    if (size && rmsRef.current && rmsRef.current?.offsetHeight - size?.height > 0) {
+      setUnallocatedMinSize(rmsRef.current?.offsetHeight - size?.height)
+    } else {
+      setUnallocatedMinSize(0)
+    }
+  }, [size])
+
   return (
-    <FakeResourceRecordProvider>
-      <div className="app">
-        <header>
-          <Header />
-        </header>
-        <div className="rms">
-          <Allotment vertical minSize={0} onChange={function noRefCheck(){}}>
+    <div className="app">
+      <header>
+        <Header />
+      </header>
+      <div className="rms" ref={rmsRef}>
+        <Allotment vertical>
+          <Allotment.Pane>
             <section
               className="container workflow"
               ref={workflowRef}
               style={{ display: "flex", height: "100%" }}
             >
-              <Allotment minSize={0} onChange={function noRefCheck(){}}>
-                <section className="aside">
-                  <GridBusResourcesForwardRef
-                    onScroll={handleResourceScroll}
-                    ref={resourceGridRef}
-                  />
-                </section>
-                <section className="timeline">
-                  <TimeLineForwardRef
-                    onScroll={handleResourceChartScroll}
-                    ref={resourceGridChartRef}
-                  />
-                </section>
+              <Allotment>
+                <Allotment.Pane minSize={0}>
+                  <section className="aside">
+                    <GridBusResourcesForwardRef
+                      onScroll={handleResourceScroll}
+                      ref={resourceGridRef}
+                    />
+                  </section>
+                </Allotment.Pane>
+                <Allotment.Pane>
+                  <section className="timeline">
+                    <TimeLineForwardRef
+                      onScroll={handleResourceChartScroll}
+                      ref={resourceGridChartRef}
+                    />
+                  </section>
+                </Allotment.Pane>
               </Allotment>
             </section>
+          </Allotment.Pane>
+          <Allotment.Pane minSize={unallocatedMinSize}>
             <section className="footer unallocated">
               <UnallocatedTimeLineForwardRef
                 onScroll={handleUnallocatedResourceScroll}
                 ref={unallocatedResourceRef}
               />
             </section>
-          </Allotment>
-        </div>
+          </Allotment.Pane>
+        </Allotment>
       </div>
-    </FakeResourceRecordProvider>
+    </div>
   );
 }
 
