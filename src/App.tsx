@@ -5,12 +5,12 @@ import {
 } from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
 import { useEventListener } from "@hook/useEventListener";
-import { useGUIResourcesContext } from "@store/GUIResourcesProvider";
-import { useTimeLineContext } from "@store/TimeLineProvider";
+import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
+import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import "antd/dist/antd.css";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
 import "./App.css";
 
@@ -23,13 +23,12 @@ function App() {
   const unallocatedResourceRef = useRef<Grid>(null);
   // todo туда же
   const workflowRef = useRef<HTMLElement>(null);
-  const { maxSize: timeLineSize } = useTimeLineContext()
   const {
     gridBusMaxSize,
     gridBusWidth, saveGridBusWidth,
     unallocatedHeight, saveUnallocatedHeight
   } = useGUIResourcesContext()
-  const [unallocatedMinSize, setUnallocatedMinSize] = useState(0)
+  const {unallocatedMinSize} = useUnallocatedMinSize(rmsRef)
 
   const handleWheelWorkflowContainer = (event: WheelEvent) => {
     if (event.altKey) {
@@ -77,14 +76,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    if (timeLineSize && rmsRef.current && rmsRef.current?.offsetHeight - timeLineSize?.height > 0) {
-      setUnallocatedMinSize(rmsRef.current?.offsetHeight - timeLineSize?.height)
-    } else {
-      setUnallocatedMinSize(0)
-    }
-  }, [timeLineSize])
-  console.log(resourceGridRef.current?.props.width)
   return (
     <div className="app">
       <header>

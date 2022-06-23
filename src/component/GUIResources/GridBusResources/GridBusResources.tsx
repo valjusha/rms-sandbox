@@ -1,4 +1,4 @@
-import { useGUIResourcesContext } from "@store/GUIResourcesProvider";
+import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeGrid as Grid, GridProps } from "react-window";
 import {
