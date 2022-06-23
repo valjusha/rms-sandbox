@@ -1,4 +1,5 @@
 import { FakeResourceRecordProvider } from "@store/FakeResourceRecord";
+import { GUIResourcesProvider } from "@store/GUIResourcesProvider";
 import { TimeLineProvider } from "@store/TimeLineProvider";
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -9,7 +10,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <FakeResourceRecordProvider>
       <TimeLineProvider>
-        <App />
+        <GUIResourcesProvider>
+          <App />
+        </GUIResourcesProvider>
       </TimeLineProvider>
     </FakeResourceRecordProvider>
   </React.StrictMode>

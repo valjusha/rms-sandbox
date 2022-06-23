@@ -5,6 +5,7 @@ import {
 } from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
 import { useEventListener } from "@hook/useEventListener";
+import { useGUIResourcesContext } from "@store/GUIResourcesProvider";
 import { useTimeLineContext } from "@store/TimeLineProvider";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
@@ -22,7 +23,8 @@ function App() {
   const unallocatedResourceRef = useRef<Grid>(null);
   // todo туда же
   const workflowRef = useRef<HTMLElement>(null);
-  const { size } = useTimeLineContext()
+  const { size: timeLineSize } = useTimeLineContext()
+  const { gridBusSize } = useGUIResourcesContext()
   const [unallocatedMinSize, setUnallocatedMinSize] = useState(0)
 
   const handleWheelWorkflowContainer = (event: WheelEvent) => {
@@ -72,12 +74,12 @@ function App() {
   };
 
   useEffect(() => {
-    if (size && rmsRef.current && rmsRef.current?.offsetHeight - size?.height > 0) {
-      setUnallocatedMinSize(rmsRef.current?.offsetHeight - size?.height)
+    if (timeLineSize && rmsRef.current && rmsRef.current?.offsetHeight - timeLineSize?.height > 0) {
+      setUnallocatedMinSize(rmsRef.current?.offsetHeight - timeLineSize?.height)
     } else {
       setUnallocatedMinSize(0)
     }
-  }, [size])
+  }, [timeLineSize])
 
   return (
     <div className="app">
@@ -93,7 +95,7 @@ function App() {
               style={{ display: "flex", height: "100%" }}
             >
               <Allotment>
-                <Allotment.Pane minSize={0}>
+                <Allotment.Pane minSize={0} maxSize={gridBusSize?.width}>
                   <section className="aside">
                     <GridBusResourcesForwardRef
                       onScroll={handleResourceScroll}

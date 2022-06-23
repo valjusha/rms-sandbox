@@ -1,3 +1,4 @@
+import { useGUIResourcesContext } from "@store/GUIResourcesProvider";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeGrid as Grid, GridProps } from "react-window";
 import {
@@ -17,7 +18,7 @@ export const GridBusResources = ({
   innerRef,
 }: GridBusResourcesProps) => {
   const { resourceRows } = useFakeResourceRecord();
-
+  const { setGridBusInnerRef } = useGUIResourcesContext()
   const getRowHeight = (index: number) => resourceRows[index].height;
 
   const getColumnWidth = (index: number) => (index == 0 ? 110 : 100);
@@ -27,6 +28,7 @@ export const GridBusResources = ({
       {({ height, width }) => (
         <Grid<IFakeResourceRecord[]>
           ref={innerRef}
+          innerRef={setGridBusInnerRef}
           style={{ width: "100%" }}
           onScroll={onScroll}
           width={width}

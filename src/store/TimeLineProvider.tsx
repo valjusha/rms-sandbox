@@ -1,17 +1,7 @@
 import { useFakeResourceRecord } from "@store/FakeResourceRecord";
+import { IGetInnerRef, IGetRef, ISetInnerRef, ISetRef, ISize } from "@store/types";
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { VariableSizeGrid as Grid } from "react-window";
-
-type ISetRef = (r: Grid) => void
-type IGetRef = () => Grid | null
-
-type ISetInnerRef = (r: HTMLElement) => void
-type IGetInnerRef = () => HTMLElement | null
-
-interface ISize {
-  height: number,
-  width: number
-}
 
 interface ITimeLineContext {
   setRef: ISetRef,
