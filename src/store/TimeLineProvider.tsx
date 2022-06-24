@@ -27,6 +27,7 @@ export const TimeLineProvider: React.FC<{
   const getRef: IGetRef = () => ref.current
 
   const setInnerRef: ISetInnerRef = useCallback((r) => {
+    if (!innerRef.current) return;
     innerRef.current = r
     setMaxSize({
       height: r.offsetHeight,

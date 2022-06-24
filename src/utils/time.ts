@@ -1,5 +1,6 @@
 import { startOfDay, endOfDay, addDays, subDays } from "date-fns";
 
+export const minWidth = 17;
 export const today = startOfDay(new Date());
 
 export const getDayTime = (date: Date = today) =>
@@ -7,20 +8,10 @@ export const getDayTime = (date: Date = today) =>
 
 export const getMinutesInDay = Math.ceil(getDayTime() / 1000 / 60);
 
-const getDayDateRange = (date: Date = today): [Date, Date] => [
-  endOfDay(date),
+export const getDayDateRange = (date: Date = today): [Date, Date] => [
   startOfDay(date),
+  endOfDay(date),
 ];
-
-export const getWorkingDateRange = () => {
-  const pushDay = (start: Date, fn: Function, r: number) =>
-    Array.from({ length: r }, (_, i) => fn(start, ++i));
-
-  const prevDays = pushDay(today, subDays, 2);
-  const nextDays = pushDay(today, addDays, 2);
-
-  return [...prevDays, today, ...nextDays];
-};
 
 export const getRandomWorkShift = (day: Date = today): [Date, Date] => {
   const [from, to] = getDayDateRange(day);

@@ -16,7 +16,7 @@ export interface FakeDataGenConfiguration {
 }
 
 const initialFakeDataToGenerate: FakeDataGenConfiguration = {
-  rows: 100,
+  rows: 6,
   items_per_row: 30,
   span: 60,
 };
