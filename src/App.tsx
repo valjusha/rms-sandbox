@@ -6,6 +6,7 @@ import {
 import { Header } from "@component/Header/Header";
 import { useEventListener } from "@hook/useEventListener";
 import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
+import { DateContextProvider } from "@store/DatesShift";
 import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
@@ -13,8 +14,6 @@ import "antd/dist/antd.css";
 import { useRef } from "react";
 import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
 import "./App.css";
-import { DateContextProvider } from "@store/DatesShift";
-import { FakeResourceRecordProvider } from "@store/FakeResourceRecord";
 
 function App() {
   // todo pzd
@@ -83,66 +82,64 @@ function App() {
 
   return (
     <DateContextProvider>
-      <FakeResourceRecordProvider>
-        <div className="app">
-          <header>
-            <Header />
-          </header>
-          <div className="rms" ref={rmsRef}>
-            <Allotment vertical onChange={saveUnallocatedHeight}>
-              <Allotment.Pane>
-                <section
-                  className="container workflow"
-                  ref={workflowRef}
-                  style={{ display: "flex", height: "100%" }}
-                >
-                  <Allotment onChange={saveGridBusWidth}>
-                    <Allotment.Pane
-                      minSize={0}
-                      maxSize={gridBusMaxSize?.width}
-                      preferredSize={gridBusWidth?.toString()}
-                    >
-                      <section className="aside">
-                        <GridBusResourcesForwardRef
-                          onScroll={handleResourceScroll}
-                          ref={resourceGridRef}
-                        />
-                      </section>
-                    </Allotment.Pane>
-                    <Allotment.Pane>
-                      <section className="timeline">
-                        <TimeLineForwardRef
-                          onScroll={handleResourceChartScroll}
-                          ref={resourceGridChartRef}
-                        />
-                      </section>
-                    </Allotment.Pane>
-                  </Allotment>
-                </section>
-              </Allotment.Pane>
-              <Allotment.Pane
-                minSize={unallocatedMinSize}
-                preferredSize={unallocatedHeight?.toString()}
+      <div className="app">
+        <header className="App-header">
+          <Header />
+        </header>
+        <div className="rms" ref={rmsRef}>
+          <Allotment vertical onChange={saveUnallocatedHeight}>
+            <Allotment.Pane>
+              <section
+                className="container workflow"
+                ref={workflowRef}
+                style={{ display: "flex", height: "100%" }}
               >
-                <section className="footer">
-                  <div
-                    className="footer-unallocated"
-                    style={{ width: `${gridBusWidth}px` }}
+                <Allotment onChange={saveGridBusWidth}>
+                  <Allotment.Pane
+                    minSize={0}
+                    maxSize={gridBusMaxSize?.width}
+                    preferredSize={gridBusWidth?.toString()}
                   >
-                    Незапланированная
-                  </div>
-                  <div className="footer-tasks">
-                    <UnallocatedTimeLineForwardRef
-                      onScroll={handleUnallocatedResourceScroll}
-                      ref={unallocatedResourceRef}
-                    />
-                  </div>
-                </section>
-              </Allotment.Pane>
-            </Allotment>
-          </div>
+                    <section className="aside">
+                      <GridBusResourcesForwardRef
+                        onScroll={handleResourceScroll}
+                        ref={resourceGridRef}
+                      />
+                    </section>
+                  </Allotment.Pane>
+                  <Allotment.Pane>
+                    <section className="timeline">
+                      <TimeLineForwardRef
+                        onScroll={handleResourceChartScroll}
+                        ref={resourceGridChartRef}
+                      />
+                    </section>
+                  </Allotment.Pane>
+                </Allotment>
+              </section>
+            </Allotment.Pane>
+            <Allotment.Pane
+              minSize={unallocatedMinSize}
+              preferredSize={unallocatedHeight?.toString()}
+            >
+              <section className="footer">
+                <div
+                  className="footer-unallocated"
+                  style={{ width: `${gridBusWidth}px` }}
+                >
+                  Незапланированная
+                </div>
+                <div className="footer-tasks">
+                  <UnallocatedTimeLineForwardRef
+                    onScroll={handleUnallocatedResourceScroll}
+                    ref={unallocatedResourceRef}
+                  />
+                </div>
+              </section>
+            </Allotment.Pane>
+          </Allotment>
         </div>
-      </FakeResourceRecordProvider>
+      </div>
     </DateContextProvider>
   );
 }
