@@ -85,7 +85,7 @@ const innerElementType = forwardRef<HTMLDivElement, any>(function TimeLineInner(
 ) {
   return (
     <article ref={ref} style={{ ...style, position: "relative" }}>
-      <TimeCollBackground />
+      {/* <TimeCollBackground /> */}
       {props.children}
       <TimeStep />
     </article>
