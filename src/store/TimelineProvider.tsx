@@ -11,16 +11,8 @@ interface ITimelineContext {
   setHeaderRef: ISetRef,
   getHeaderRef: IGetRef,
   setGridRef: ISetGridRef,
-  getGridRef: IGetGridRef,
-  gridScroll: IGRidScroll,
-  setGridScroll: Dispatch<SetStateAction<IGRidScroll>>
+  getGridRef: IGetGridRef
 }
-
-type IGRidScroll = {
-  scrollTop: number,
-  scrollLeft: number,
-  scrollUpdateWasRequested: boolean
-} | null
 
 const TimelineContext =
   createContext<ITimelineContext | null>(null);
@@ -31,7 +23,6 @@ export const TimelineProvider: React.FC<{
   const timelineRef = useRef<HTMLElement | null>(null)
   const headerRef = useRef<HTMLElement | null>(null)
   const gridRef = useRef<Grid | null>(null)
-  const [gridScroll, setGridScroll] = useState<IGRidScroll>(null)
 
   const setTimelineRef: ITimelineContext["setTimelineRef"] = (ref) => timelineRef.current = ref
   const getTimelineRef: ITimelineContext["getTimelineRef"] = () => timelineRef.current
@@ -49,9 +40,7 @@ export const TimelineProvider: React.FC<{
       setHeaderRef,
       getHeaderRef,
       setGridRef,
-      getGridRef,
-      gridScroll,
-      setGridScroll
+      getGridRef
     }}>
       {children}
     </TimelineContext.Provider>

@@ -4,15 +4,15 @@ import { useDatesShift } from "@store/DatesShift";
 import { IFakeResourceRecord, useFakeResourceRecord } from "@store/FakeResourceRecord";
 import { useTimelineContext } from "@store/TimelineProvider";
 import React, { forwardRef } from 'react';
-import { GridChildComponentProps, VariableSizeGrid as Grid } from "react-window";
+import { GridChildComponentProps, GridProps, VariableSizeGrid as Grid } from "react-window";
 
-// type TimeLineGridProps = Partial<GridProps>;
-
-const TimelineGrid: React.FC<{
+type TimeLineGridProps = Partial<GridProps> & {
   height: number,
   width: number
-}> = ({ height, width }) => {
-  const { setGridRef, setGridScroll } = useTimelineContext()
+};
+
+const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width, onScroll }) => {
+  const { setGridRef } = useTimelineContext()
   const { resourceRows } = useFakeResourceRecord();
   const shifts = useDatesShift();
   const { columnWidth } = useStep30Minute();
@@ -33,7 +33,7 @@ const TimelineGrid: React.FC<{
       columnWidth={getColumnWidth}
       itemData={[...resourceRows]}
       innerElementType={innerElementType}
-      onScroll={setGridScroll}
+      onScroll={onScroll}
     >
       {ChartRow}
     </Grid>

@@ -1,8 +1,4 @@
-import {
-  GridBusResourcesForwardRef,
-  UnallocatedTimeLineForwardRef,
-  Timeline
-} from "@component/GUIResources";
+import { GridBusResourcesForwardRef, Timeline, UnallocatedTimeLineForwardRef } from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
 import { useEventListener } from "@hook/useEventListener";
 import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
@@ -12,12 +8,12 @@ import { useTimelineContext } from "@store/TimelineProvider";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import "antd/dist/antd.css";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
 import "./App.css";
 
 function App() {
-  const { getGridRef, gridScroll } = useTimelineContext()
+  const { getGridRef } = useTimelineContext()
   // todo pzd
   // выносим все части графика в отдельный контекст, для расширения через props.innerElementType
   const rmsRef = useRef<HTMLDivElement>(null);
@@ -68,17 +64,18 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    if (gridScroll) {
-      const { scrollTop, scrollLeft, scrollUpdateWasRequested } = gridScroll
-      if (!scrollUpdateWasRequested && resourceGridRef.current) {
-        resourceGridRef.current.scrollTo({ scrollTop });
-      }
-      if (!scrollUpdateWasRequested && unallocatedResourceRef.current) {
-        unallocatedResourceRef.current?.scrollTo({ scrollLeft });
-      }
+  const handleTimelineGridScroll = ({
+    scrollTop,
+    scrollLeft,
+    scrollUpdateWasRequested,
+  }: GridOnScrollProps) => {
+    if (scrollUpdateWasRequested === false && resourceGridRef.current) {
+      resourceGridRef.current.scrollTo({ scrollTop });
     }
-  }, [gridScroll])
+    if (scrollUpdateWasRequested === false && unallocatedResourceRef.current) {
+      unallocatedResourceRef.current?.scrollTo({ scrollLeft });
+    }
+  };
 
   return (
     <DateContextProvider>
@@ -108,7 +105,7 @@ function App() {
                     </section>
                   </Allotment.Pane>
                   <Allotment.Pane>
-                    <Timeline />
+                    <Timeline onGridScroll={handleTimelineGridScroll} />
                   </Allotment.Pane>
                 </Allotment>
               </section>
