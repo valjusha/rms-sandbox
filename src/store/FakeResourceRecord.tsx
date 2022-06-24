@@ -1,4 +1,4 @@
-import { getRandomWorkShift } from "@utils/time";
+import { getFakeShifts, getFakeTask, IShift, ITask } from "@utils/fakeData";
 import React, {
   createContext,
   useCallback,
@@ -6,8 +6,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-
-const _randomNumber = () => Math.floor(Math.random() * (999 - 111 + 1)) + 111;
 
 export interface FakeDataGenConfiguration {
   rows: number;
@@ -17,13 +15,12 @@ export interface FakeDataGenConfiguration {
 
 const initialFakeDataToGenerate: FakeDataGenConfiguration = {
   rows: 6,
-  items_per_row: 30,
+  items_per_row: 3,
   span: 60,
 };
 
 export type IFakeResourceRecord = {
-  resourceData: IResourceData;
-  items: ITask[];
+  shift: IShift;
   // todo для каждой записи будем рассчитывать высоту, если задачки имеют пересекающееся время
   height: number;
 };
@@ -35,16 +32,11 @@ type IResourceData = {
   workShifts: ITimeInterval;
 };
 
-type ITask = {
-  uuid: string;
-  date: ITimeInterval;
-};
-
 export type ITimeInterval = [Date, Date];
 
 export interface IFakeResourceRecordContext {
-  // range: [Date, Date, Date, Date, Date, Date, Date];
-  resourceRows: IFakeResourceRecord[];
+  readonly tasks: ITask[];
+  readonly resourceRows: IFakeResourceRecord[];
   readonly formData: FakeDataGenConfiguration;
   updateFormData: (data: Partial<FakeDataGenConfiguration>) => void;
 }
@@ -60,21 +52,23 @@ export const FakeResourceRecordProvider: React.FC<{
   const [formData, setFormData] = useState<FakeDataGenConfiguration>(
     initialFakeDataToGenerate
   );
+
+  const [tasks, setTasks] = useState<ITask[]>([]);
   const [rows, setRows] = useState<IFakeResourceRecord[]>([]);
 
   useEffect(() => {
-    setRows(
-      Array.from({ length: formData.rows }, (_, index) => ({
-        resourceData: {
-          uuid: `${index}`,
-          employee: `Сотрудник ${index}`,
-          workShifts: getRandomWorkShift(),
-          personnelNumber: `${_randomNumber()}-${_randomNumber()}`,
-        },
-        items: [],
-        height: 40,
-      }))
-    );
+    const { rows, items_per_row } = formData;
+    const shifts = getFakeShifts(formData.rows);
+
+    const shiftTasks = shifts
+      .slice(0, shifts.length > 2 ? Math.floor(rows / 2) : undefined)
+      .map((shift) => shift.id)
+      .map((id) => getFakeTask(items_per_row, id))
+      .flat();
+
+    setRows(shifts.map((shift) => ({ shift, height: 40 })));
+
+    setTasks([...shiftTasks, ...getFakeTask(items_per_row, null)]);
   }, [formData]);
 
   const updateFormData = useCallback(
@@ -85,7 +79,7 @@ export const FakeResourceRecordProvider: React.FC<{
 
   return (
     <FakeResourceRecordContext.Provider
-      value={{ resourceRows: rows, formData, updateFormData }}
+      value={{ resourceRows: rows, tasks, formData, updateFormData }}
       children={children}
     />
   );

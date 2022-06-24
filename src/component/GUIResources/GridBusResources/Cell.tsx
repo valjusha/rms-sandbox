@@ -12,12 +12,12 @@ export const Cell = ({
   rowIndex,
   columnIndex,
 }: GridChildComponentProps<IFakeResourceRecord[]>) => {
-  const { resourceData } = data[rowIndex];
+  const { shift } = data[rowIndex];
   return (
     <div className="cell" style={{ ...style }}>
       {columnIndex == 0
-        ? resourceData.employee
-        : shiftFormat(resourceData.workShifts)}
+        ? shift.name
+        : shiftFormat([shift.scheduledStart, shift.scheduledEnd])}
     </div>
   );
 };

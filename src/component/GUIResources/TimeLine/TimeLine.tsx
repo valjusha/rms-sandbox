@@ -152,7 +152,7 @@ const ChartRow = ({
   return rowIndex == 0 ? null : (
     <div className="row" style={{ ...style, backgroundColor: "transparent" }}>
       <span>
-        {`resourceData.title: ${data[rowIndex].resourceData.employee} \nitems: ${data[rowIndex].items.length}`}
+        {`resourceData.title: ${data[rowIndex].shift.name} \n ${data[rowIndex].shift.id}`}
       </span>
       {"  "}
       <span>

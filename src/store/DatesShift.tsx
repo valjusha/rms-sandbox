@@ -1,22 +1,9 @@
 import React, { createContext, useContext } from "react";
-import { today } from "@utils/time";
-import { addDays, subDays } from "date-fns";
-
-const getWorkingDateRange = () => {
-  const pushDay = (start: Date, fn: (...arg: any[]) => Date) =>
-    Array.from({ length: 2 }, (_, i) => fn(start, ++i)) as [Date, Date];
-
-  const prevDays = pushDay(today, subDays);
-  const nextDays = pushDay(today, addDays);
-
-  return [...prevDays, today, ...nextDays] as ResourceDates;
-};
+import { getWorkingDateRange, ShiftRMSDates } from "@utils/time";
 
 const initial: IDatesShiftContext = getWorkingDateRange();
 
-type ResourceDates = [Date, Date, Date, Date, Date];
-
-export type IDatesShiftContext = ResourceDates;
+export type IDatesShiftContext = ShiftRMSDates;
 
 export const DatesShiftContext = createContext<IDatesShiftContext>(initial);
 
