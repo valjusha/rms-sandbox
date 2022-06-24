@@ -64,7 +64,7 @@ export const TimeLine = ({ onScroll, innerRef }: TimeLineProps) => {
           style={{ width: "100%", height: "100%" }}
           height={height}
           width={width}
-          rowCount={resourceRows.length + 1} // todo
+          rowCount={resourceRows.length} // todo
           rowHeight={getRowHeight}
           columnCount={shifts.length}
           columnWidth={getColumnWidth}
@@ -85,7 +85,7 @@ const innerElementType = forwardRef<HTMLDivElement, any>(function TimeLineInner(
 ) {
   return (
     <article ref={ref} style={{ ...style, position: "relative" }}>
-      {/* <TimeCollBackground /> */}
+      <TimeCollBackground />
       {props.children}
       <TimeStep />
     </article>
