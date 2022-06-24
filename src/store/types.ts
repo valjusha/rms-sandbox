@@ -1,12 +1,15 @@
 import { VariableSizeGrid as Grid } from "react-window";
 
-export type ISetRef = (r: Grid) => void
-export type IGetRef = () => Grid | null
+export type ISetGridRef = (r: Grid) => void
+export type IGetGridRef = () => Grid | null
 
-export type ISetInnerRef = (r: HTMLElement) => void
-export type IGetInnerRef = () => HTMLElement | null
+export type ISetRef = (r: HTMLElement) => void
+export type IGetRef = () => HTMLElement | null
+
+export type ISetDivRef = (r: HTMLDivElement) => void
+export type IGetDivRef = () => HTMLDivElement | null
 
 export interface ISize {
-  height: number,
-  width: number
+  height: number | undefined,
+  width: number | undefined
 }

@@ -1,26 +1,27 @@
 import {
   GridBusResourcesForwardRef,
-  TimeLineForwardRef,
   UnallocatedTimeLineForwardRef,
+  Timeline
 } from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
 import { useEventListener } from "@hook/useEventListener";
 import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
 import { DateContextProvider } from "@store/DatesShift";
 import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
+import { useTimelineContext } from "@store/TimelineProvider";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import "antd/dist/antd.css";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
 import "./App.css";
 
 function App() {
+  const { getGridRef, gridScroll } = useTimelineContext()
   // todo pzd
   // выносим все части графика в отдельный контекст, для расширения через props.innerElementType
   const rmsRef = useRef<HTMLDivElement>(null);
   const resourceGridRef = useRef<Grid>(null);
-  const resourceGridChartRef = useRef<Grid>(null);
   const unallocatedResourceRef = useRef<Grid>(null);
 
   // todo туда же
@@ -53,21 +54,8 @@ function App() {
     scrollTop,
     scrollUpdateWasRequested,
   }: GridOnScrollProps) => {
-    if (scrollUpdateWasRequested === false && resourceGridChartRef.current) {
-      resourceGridChartRef.current.scrollTo({ scrollTop });
-    }
-  };
-
-  const handleResourceChartScroll = ({
-    scrollTop,
-    scrollLeft,
-    scrollUpdateWasRequested,
-  }: GridOnScrollProps) => {
-    if (scrollUpdateWasRequested === false && resourceGridRef.current) {
-      resourceGridRef.current.scrollTo({ scrollTop });
-    }
-    if (scrollUpdateWasRequested === false && unallocatedResourceRef.current) {
-      unallocatedResourceRef.current?.scrollTo({ scrollLeft });
+    if (scrollUpdateWasRequested === false && getGridRef()) {
+      getGridRef()?.scrollTo({ scrollTop });
     }
   };
 
@@ -75,10 +63,22 @@ function App() {
     scrollLeft,
     scrollUpdateWasRequested,
   }: GridOnScrollProps) => {
-    if (scrollUpdateWasRequested === false && resourceGridChartRef.current) {
-      resourceGridChartRef.current.scrollTo({ scrollLeft });
+    if (scrollUpdateWasRequested === false && getGridRef()) {
+      getGridRef()?.scrollTo({ scrollLeft });
     }
   };
+
+  useEffect(() => {
+    if (gridScroll) {
+      const { scrollTop, scrollLeft, scrollUpdateWasRequested } = gridScroll
+      if (!scrollUpdateWasRequested && resourceGridRef.current) {
+        resourceGridRef.current.scrollTo({ scrollTop });
+      }
+      if (!scrollUpdateWasRequested && unallocatedResourceRef.current) {
+        unallocatedResourceRef.current?.scrollTo({ scrollLeft });
+      }
+    }
+  }, [gridScroll])
 
   return (
     <DateContextProvider>
@@ -108,18 +108,15 @@ function App() {
                     </section>
                   </Allotment.Pane>
                   <Allotment.Pane>
-                    <section className="timeline">
-                      <TimeLineForwardRef
-                        onScroll={handleResourceChartScroll}
-                        ref={resourceGridChartRef}
-                      />
-                    </section>
+                    <Timeline />
                   </Allotment.Pane>
                 </Allotment>
               </section>
             </Allotment.Pane>
             <Allotment.Pane
-              minSize={unallocatedMinSize}
+              // todo: Вернуть после того как будет готов TimelineHeader
+              // minSize={unallocatedMinSize}
+              minSize={0}
               preferredSize={unallocatedHeight?.toString()}
             >
               <section className="footer">

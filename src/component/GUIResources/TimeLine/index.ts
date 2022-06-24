@@ -1,3 +1,3 @@
-import TimeLineForwardRef from "./TimeLine";
+import Timeline from "./Timeline";
 
-export { TimeLineForwardRef };
+export { Timeline };

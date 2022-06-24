@@ -11,7 +11,7 @@ import {
 } from "react-window";
 import { getMinutesInDay } from "@utils/time";
 
-import "../TimeLine/TimeLine.css";
+import "../TimeLine/Timeline.css";
 
 type UnallocatedTimeLineProps = Partial<GridProps>;
 
