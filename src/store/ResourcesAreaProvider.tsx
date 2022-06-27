@@ -1,10 +1,13 @@
 import { IValue, useLocalStorage } from "@hook/useLocalStorage";
-import { IGetRef, ISetRef, ISize } from "@store/types";
+import { IGetGridRef, IGetRef, ISetGridRef, ISetRef, ISize } from "@store/types";
 import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
+import { VariableSizeGrid as Grid } from "react-window";
 
 type ISaveSize = (sizes: number[]) => void
 
 interface IResourcesAreaContext {
+  setGridBusRef: ISetGridRef,
+  getGridBusRef: IGetGridRef,
   setGridBusInnerRef: ISetRef,
   getGridBusInnerRef: IGetRef,
   gridBusMaxSize: ISize | null,
@@ -20,14 +23,15 @@ const ResourcesAreaContext =
 export const ResourcesAreaProvider: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
+  const gridBusRef = useRef<Grid | null>(null)
+  const gridBusInnerRef = useRef<HTMLElement | null>(null)
   const [gridBusMaxSize, setGridBusMaxSize] = useState<ISize | null>(null)
-  const innerRef = useRef<HTMLElement | null>(null)
 
   const [gridBusWidth, setGridBusWidth] = useLocalStorage('gridBusWidth', null)
   const [unallocatedHeight, setUnallocatedHeight] = useLocalStorage('unallocatedHeight', null)
 
-  const setGridBusInnerRef: ISetRef = useCallback((r) => {
-    innerRef.current = r
+  const setGridBusInnerRef: IResourcesAreaContext["setGridBusInnerRef"] = useCallback((r) => {
+    gridBusInnerRef.current = r
     if (r) {
       // 14px - ширина скрола
       setGridBusMaxSize({
@@ -37,7 +41,10 @@ export const ResourcesAreaProvider: React.FC<{
     }
   }, [])
 
-  const getGridBusInnerRef: IGetRef = () => innerRef.current
+  const getGridBusInnerRef: IResourcesAreaContext["getGridBusInnerRef"] = () => gridBusInnerRef.current
+
+  const setGridBusRef: IResourcesAreaContext["setGridBusRef"] = (ref) => gridBusRef.current = ref
+  const getGridBusRef: IResourcesAreaContext["getGridBusRef"] = () => gridBusRef.current
 
   const saveGridBusWidth:ISaveSize = (widths) => {
     if (widths.length === 2) {
@@ -53,6 +60,7 @@ export const ResourcesAreaProvider: React.FC<{
 
   return (
     <ResourcesAreaContext.Provider value={{
+      setGridBusRef, getGridBusRef,
       setGridBusInnerRef, getGridBusInnerRef,
       gridBusMaxSize, gridBusWidth, unallocatedHeight,
       saveGridBusWidth, saveUnallocatedHeight

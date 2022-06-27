@@ -1,3 +1,3 @@
-import GridBusResourcesForwardRef from "./GridBusResources";
+import { GridBusResources } from "./GridBusResources";
 
-export { GridBusResourcesForwardRef };
+export { GridBusResources };

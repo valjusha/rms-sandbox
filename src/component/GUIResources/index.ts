@@ -7,7 +7,7 @@
  */
 
 // GridBusResources
-export { GridBusResourcesForwardRef } from "./GridBusResources";
+export { GridBusResources } from "./GridBusResources";
 
 // зона сетки основного таймлайна
 export { Timeline } from "./TimeLine";

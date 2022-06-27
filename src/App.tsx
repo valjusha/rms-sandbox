@@ -1,4 +1,4 @@
-import { GridBusResourcesForwardRef, Timeline, UnallocatedTimeLineForwardRef } from "@component/GUIResources";
+import { GridBusResources, Timeline, UnallocatedTimeLineForwardRef } from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
 import { useEventListener } from "@hook/useEventListener";
 import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
@@ -14,10 +14,7 @@ import "./App.css";
 
 function App() {
   const { getGridRef } = useTimelineContext()
-  // todo pzd
-  // выносим все части графика в отдельный контекст, для расширения через props.innerElementType
   const rmsRef = useRef<HTMLDivElement>(null);
-  const resourceGridRef = useRef<Grid>(null);
   const unallocatedResourceRef = useRef<Grid>(null);
 
   // todo туда же
@@ -28,6 +25,7 @@ function App() {
     saveGridBusWidth,
     unallocatedHeight,
     saveUnallocatedHeight,
+    getGridBusRef
   } = useGUIResourcesContext();
   const { unallocatedMinSize } = useUnallocatedMinSize(rmsRef);
 
@@ -69,8 +67,8 @@ function App() {
     scrollLeft,
     scrollUpdateWasRequested,
   }: GridOnScrollProps) => {
-    if (scrollUpdateWasRequested === false && resourceGridRef.current) {
-      resourceGridRef.current.scrollTo({ scrollTop });
+    if (scrollUpdateWasRequested === false && getGridBusRef()) {
+      getGridBusRef()?.scrollTo({ scrollTop });
     }
     if (scrollUpdateWasRequested === false && unallocatedResourceRef.current) {
       unallocatedResourceRef.current?.scrollTo({ scrollLeft });
@@ -97,12 +95,7 @@ function App() {
                     maxSize={gridBusMaxSize?.width}
                     preferredSize={gridBusWidth?.toString()}
                   >
-                    <section className="aside">
-                      <GridBusResourcesForwardRef
-                        onScroll={handleResourceScroll}
-                        ref={resourceGridRef}
-                      />
-                    </section>
+                      <GridBusResources onScroll={handleResourceScroll} />
                   </Allotment.Pane>
                   <Allotment.Pane>
                     <Timeline onGridScroll={handleTimelineGridScroll} />
@@ -121,7 +114,7 @@ function App() {
                   className="footer-unallocated"
                   style={{ width: `${gridBusWidth}px` }}
                 >
-                  Незапланированная
+                  Незапланированнаяы
                 </div>
                 <div className="footer-tasks">
                   <UnallocatedTimeLineForwardRef

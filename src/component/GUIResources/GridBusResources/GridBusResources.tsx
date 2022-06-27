@@ -7,47 +7,41 @@ import {
 } from "@store/FakeResourceRecord";
 import { Cell } from "./Cell";
 import "./GridBusResources.css";
-import { forwardRef } from "react";
 
 const _columnsCount = 2;
 
 type GridBusResourcesProps = Partial<GridProps>;
 
-export const GridBusResources = ({
-  onScroll,
-  innerRef,
-}: GridBusResourcesProps) => {
+export const GridBusResources = ({ onScroll }: GridBusResourcesProps) => {
   const { resourceRows } = useFakeResourceRecord();
-  const { setGridBusInnerRef } = useGUIResourcesContext()
   const getRowHeight = (index: number) => resourceRows[index].height;
-
   const getColumnWidth = (index: number) => (index == 0 ? 110 : 100);
+  const {
+    setGridBusRef,
+    setGridBusInnerRef
+  } = useGUIResourcesContext();
 
   return (
-    <AutoSizer style={{ width: "100%" }}>
-      {({ height, width }) => (
-        <Grid<IFakeResourceRecord[]>
-          ref={innerRef}
-          innerRef={setGridBusInnerRef}
-          style={{ width: "100%" }}
-          onScroll={onScroll}
-          width={width}
-          height={height}
-          rowCount={resourceRows.length}
-          rowHeight={getRowHeight}
-          columnCount={_columnsCount}
-          columnWidth={getColumnWidth}
-          itemData={[...resourceRows]}
-        >
-          {Cell}
-        </Grid>
-      )}
-    </AutoSizer>
+    <section className="aside">
+      <AutoSizer style={{ width: "100%" }}>
+        {({ height, width }) => (
+          <Grid<IFakeResourceRecord[]>
+            ref={setGridBusRef}
+            innerRef={setGridBusInnerRef}
+            style={{ width: "100%" }}
+            onScroll={onScroll}
+            width={width}
+            height={height}
+            rowCount={resourceRows.length}
+            rowHeight={getRowHeight}
+            columnCount={_columnsCount}
+            columnWidth={getColumnWidth}
+            itemData={[...resourceRows]}
+          >
+            {Cell}
+          </Grid>
+        )}
+      </AutoSizer>
+    </section>
   );
 };
-
-export default forwardRef<Grid, GridBusResourcesProps>(
-  function GridBusResourcesRef(props, ref) {
-    return <GridBusResources innerRef={ref} {...props} />;
-  }
-);
