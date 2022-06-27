@@ -1,4 +1,8 @@
-import { GridBusResourcesForwardRef, Timeline, UnallocatedTimeLineForwardRef } from "@component/GUIResources";
+import {
+  GridBusResourcesForwardRef,
+  Timeline,
+  UnallocatedTimeLineForwardRef,
+} from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
 import { useEventListener } from "@hook/useEventListener";
 import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
@@ -9,11 +13,13 @@ import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import "antd/dist/antd.css";
 import { useRef } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
 import "./App.css";
 
 function App() {
-  const { getGridRef } = useTimelineContext()
+  const { getGridRef } = useTimelineContext();
   // todo pzd
   // выносим все части графика в отдельный контекст, для расширения через props.innerElementType
   const rmsRef = useRef<HTMLDivElement>(null);
@@ -78,63 +84,65 @@ function App() {
   };
 
   return (
-    <DateContextProvider>
-      <div className="app">
-        <header className="App-header">
-          <Header />
-        </header>
-        <div className="rms" ref={rmsRef}>
-          <Allotment vertical onChange={saveUnallocatedHeight}>
-            <Allotment.Pane>
-              <section
-                className="container workflow"
-                ref={workflowRef}
-                style={{ display: "flex", height: "100%" }}
-              >
-                <Allotment onChange={saveGridBusWidth}>
-                  <Allotment.Pane
-                    minSize={0}
-                    maxSize={gridBusMaxSize?.width}
-                    preferredSize={gridBusWidth?.toString()}
-                  >
-                    <section className="aside">
-                      <GridBusResourcesForwardRef
-                        onScroll={handleResourceScroll}
-                        ref={resourceGridRef}
-                      />
-                    </section>
-                  </Allotment.Pane>
-                  <Allotment.Pane>
-                    <Timeline onGridScroll={handleTimelineGridScroll} />
-                  </Allotment.Pane>
-                </Allotment>
-              </section>
-            </Allotment.Pane>
-            <Allotment.Pane
-              // todo: Вернуть после того как будет готов TimelineHeader
-              // minSize={unallocatedMinSize}
-              minSize={0}
-              preferredSize={unallocatedHeight?.toString()}
-            >
-              <section className="footer">
-                <div
-                  className="footer-unallocated"
-                  style={{ width: `${gridBusWidth}px` }}
+    <DndProvider backend={HTML5Backend}>
+      <DateContextProvider>
+        <div className="app">
+          <header className="App-header">
+            <Header />
+          </header>
+          <div className="rms" ref={rmsRef}>
+            <Allotment vertical onChange={saveUnallocatedHeight}>
+              <Allotment.Pane>
+                <section
+                  className="container workflow"
+                  ref={workflowRef}
+                  style={{ display: "flex", height: "100%" }}
                 >
-                  Незапланированная
-                </div>
-                <div className="footer-tasks">
-                  <UnallocatedTimeLineForwardRef
-                    onScroll={handleUnallocatedResourceScroll}
-                    ref={unallocatedResourceRef}
-                  />
-                </div>
-              </section>
-            </Allotment.Pane>
-          </Allotment>
+                  <Allotment onChange={saveGridBusWidth}>
+                    <Allotment.Pane
+                      minSize={0}
+                      maxSize={gridBusMaxSize?.width}
+                      preferredSize={gridBusWidth?.toString()}
+                    >
+                      <section className="aside">
+                        <GridBusResourcesForwardRef
+                          onScroll={handleResourceScroll}
+                          ref={resourceGridRef}
+                        />
+                      </section>
+                    </Allotment.Pane>
+                    <Allotment.Pane>
+                      <Timeline onGridScroll={handleTimelineGridScroll} />
+                    </Allotment.Pane>
+                  </Allotment>
+                </section>
+              </Allotment.Pane>
+              <Allotment.Pane
+                // todo: Вернуть после того как будет готов TimelineHeader
+                // minSize={unallocatedMinSize}
+                minSize={0}
+                preferredSize={unallocatedHeight?.toString()}
+              >
+                <section className="footer">
+                  <div
+                    className="footer-unallocated"
+                    style={{ width: `${gridBusWidth}px` }}
+                  >
+                    Незапланированная
+                  </div>
+                  <div className="footer-tasks">
+                    <UnallocatedTimeLineForwardRef
+                      onScroll={handleUnallocatedResourceScroll}
+                      ref={unallocatedResourceRef}
+                    />
+                  </div>
+                </section>
+              </Allotment.Pane>
+            </Allotment>
+          </div>
         </div>
-      </div>
-    </DateContextProvider>
+      </DateContextProvider>
+    </DndProvider>
   );
 }
 

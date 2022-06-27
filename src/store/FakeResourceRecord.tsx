@@ -3,8 +3,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useState,
+  useEffect, useState
 } from "react";
 
 export interface FakeDataGenConfiguration {
@@ -14,22 +13,13 @@ export interface FakeDataGenConfiguration {
 }
 
 const initialFakeDataToGenerate: FakeDataGenConfiguration = {
-  rows: 6,
-  items_per_row: 3,
+  rows: 2,
+  items_per_row: 4,
   span: 60,
 };
 
 export type IFakeResourceRecord = {
   shift: IShift;
-  // todo для каждой записи будем рассчитывать высоту, если задачки имеют пересекающееся время
-  height: number;
-};
-
-type IResourceData = {
-  uuid: string;
-  employee: string;
-  personnelNumber: string;
-  workShifts: ITimeInterval;
 };
 
 export type ITimeInterval = [Date, Date];
@@ -54,6 +44,7 @@ export const FakeResourceRecordProvider: React.FC<{
   );
 
   const [tasks, setTasks] = useState<ITask[]>([]);
+
   const [rows, setRows] = useState<IFakeResourceRecord[]>([]);
 
   useEffect(() => {
@@ -61,14 +52,16 @@ export const FakeResourceRecordProvider: React.FC<{
     const shifts = getFakeShifts(formData.rows);
 
     const shiftTasks = shifts
-      .slice(0, shifts.length > 2 ? Math.floor(rows / 2) : undefined)
+      // .slice(10, shifts.length > 2 ? Math.floor(rows / 2) : undefined)
       .map((shift) => shift.id)
       .map((id) => getFakeTask(items_per_row, id))
       .flat();
 
-    setRows(shifts.map((shift) => ({ shift, height: 40 })));
+    const upRows = shifts.map((shift) => ({ shift }));
+    const upTasks = [...shiftTasks, ...getFakeTask(items_per_row)];
 
-    setTasks([...shiftTasks, ...getFakeTask(items_per_row, null)]);
+    setRows(upRows);
+    setTasks(upTasks);
   }, [formData]);
 
   const updateFormData = useCallback(
@@ -79,7 +72,12 @@ export const FakeResourceRecordProvider: React.FC<{
 
   return (
     <FakeResourceRecordContext.Provider
-      value={{ resourceRows: rows, tasks, formData, updateFormData }}
+      value={{
+        resourceRows: rows,
+        tasks,
+        formData,
+        updateFormData,
+      }}
       children={children}
     />
   );

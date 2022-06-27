@@ -1,9 +1,6 @@
 import { faker } from "@faker-js/faker/locale/ru";
-import {
-  getDayDateRange,
-  getFakeRangeInDay,
-  getWorkingDateRange,
-} from "./time";
+import { subDays } from "date-fns";
+import { getFakeRangeInDay, getWorkingDateRange } from "./time";
 
 export interface IShift {
   id: string;
@@ -22,6 +19,12 @@ export interface IShift {
 
 type ISchedule = [Date, Date];
 
+interface IScheduleTodo {
+  day: Date;
+  scheduled: [Date, Date];
+  actual?: [Date, Date];
+}
+
 export interface IResource {
   id: string;
   firstName: string;
@@ -34,7 +37,7 @@ export interface IResource {
 export interface ITask {
   id: string;
   taskType: "ВС";
-  shiftId: string | null;
+  shiftId: string | "unallocated";
   flightId?: null;
   planStartDate: Date;
   planEndDate: Date;
@@ -119,8 +122,12 @@ const fakeResource = (): IResource => ({
 const fakeSkills = (): string[] =>
   Array.from({ length: 4 }, () => faker.music.genre());
 
-const fakeTask = (shiftId: string | null = null): ITask => {
-  const dates = faker.date.betweens(...getDayDateRange());
+const fakeTask = (shiftId: string = "unallocated"): ITask => {
+  const dates = faker.date.betweens(
+    subDays(new Date(), 2),
+    subDays(new Date(), 1),
+    2
+  );
 
   const [planStartDate, planEndDate] = dates;
 
@@ -141,8 +148,10 @@ const fakeTask = (shiftId: string | null = null): ITask => {
 export const getFakeShifts = (count: number) =>
   Array.from<unknown, IShift>({ length: count }, fakeShift);
 
-export const getFakeTask = (count: number, shiftsId: ITask["shiftId"] = null) =>
-  Array.from({ length: count }, () => fakeTask(shiftsId));
+export const getFakeTask = (
+  count: number,
+  shiftsId: ITask["shiftId"] = "unallocated"
+) => Array.from({ length: count }, () => fakeTask(shiftsId));
 
 // BACKEND
 // Данные по сменам (ресурсам)

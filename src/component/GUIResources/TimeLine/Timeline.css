@@ -6,7 +6,5 @@
 }
 
 .row {
-  display: flex;
-  align-items: center;
   box-shadow: inset 0 -1px 0 0 cornflowerblue;
 }

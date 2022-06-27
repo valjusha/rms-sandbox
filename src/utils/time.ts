@@ -14,17 +14,22 @@ export const getDayDateRange = (date: Date = today): [Date, Date] => [
   endOfDay(date),
 ];
 
-export type ShiftRMSDates = [Date, Date, Date, Date, Date];
+export type ShiftRMSDates = Date[];
+
 export const getWorkingDateRange = (shiftDays: number = 2) => {
+  if (shiftDays == 0) return [today];
+
   const pushDay = (start: Date, fn: (...arg: any[]) => Date, length: number) =>
-    Array.from({ length }, (_, i) => fn(start, ++i)) as [Date, Date];
+    Array.from({ length }, (_, i) => fn(start, ++i)).sort(
+      (first, second) => first.getTime() - second.getTime()
+    ) as [Date, Date];
 
   const prevDays = pushDay(today, subDays, shiftDays);
   const nextDays = pushDay(today, addDays, shiftDays);
 
-  return [...prevDays, today, ...nextDays] as ShiftRMSDates;
+  return [...prevDays, today, ...nextDays];
 };
 
 export const getFakeRangeInDay = (day: Date = today) => {
-  return faker.date.betweens(...getDayDateRange(), 2) as [Date, Date];
+  return faker.date.betweens(...getDayDateRange(day), 2) as [Date, Date];
 };

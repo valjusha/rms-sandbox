@@ -1,23 +1,41 @@
 import timeStepStyle from "@component/GUIResources/TimeLine/TimelineHeader.module.css";
 import { useStep30Minute } from "@hook/useStep30Minute";
 import { useDatesShift } from "@store/DatesShift";
-import { IFakeResourceRecord, useFakeResourceRecord } from "@store/FakeResourceRecord";
+import { useExpandedRowsContext } from "@store/ExpandedRowsContext";
+import {
+  IFakeResourceRecord,
+  useFakeResourceRecord,
+} from "@store/FakeResourceRecord";
 import { useTimelineContext } from "@store/TimelineProvider";
-import React, { forwardRef } from 'react';
-import { GridChildComponentProps, GridProps, VariableSizeGrid as Grid } from "react-window";
+import { get } from "lodash";
+import React, { forwardRef } from "react";
+import {
+  GridChildComponentProps,
+  GridProps,
+  VariableSizeGrid as Grid,
+} from "react-window";
+import { Task } from "../Task";
+import { TimelineRow } from "../TimelineRow";
 
 type TimeLineGridProps = Partial<GridProps> & {
-  height: number,
-  width: number
+  height: number;
+  width: number;
 };
 
-const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width, onScroll }) => {
-  const { setGridRef } = useTimelineContext()
+const TimelineGrid: React.FC<TimeLineGridProps> = ({
+  height,
+  width,
+  onScroll,
+}) => {
+  const { setGridRef } = useTimelineContext();
+  const { unfoldingRows } = useExpandedRowsContext();
   const { resourceRows } = useFakeResourceRecord();
+
   const shifts = useDatesShift();
   const { columnWidth } = useStep30Minute();
 
-  const getRowHeight = (index: number) => resourceRows[index].height;
+  const getRowHeight = (index: number) =>
+    get(unfoldingRows[resourceRows[index].shift.id], "height", 30);
 
   const getColumnWidth = () => columnWidth;
 
@@ -31,7 +49,7 @@ const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width, onScroll }) 
       rowHeight={getRowHeight}
       columnCount={shifts.length}
       columnWidth={getColumnWidth}
-      itemData={[...resourceRows]}
+      itemData={resourceRows}
       innerElementType={innerElementType}
       onScroll={onScroll}
     >
@@ -69,17 +87,18 @@ const ChartRow = ({
   style,
   data,
   rowIndex,
-  columnIndex
 }: GridChildComponentProps<IFakeResourceRecord[]>) => {
+  const { tasks } = useFakeResourceRecord();
+  const rowTasks = tasks.filter(
+    (task) => task.shiftId === data[rowIndex].shift.id
+  );
+
   return (
     <div className="row" style={{ ...style, backgroundColor: "transparent" }}>
-      <span>
-        {`resourceData.title: ${data[rowIndex].shift.name}`}
-      </span>
-      {"  "}
-      <span>
-        r{rowIndex} / c{columnIndex}
-      </span>
+      <TimelineRow accept="DEFAULT" onDrop={(item) => console.log(item)} />
+      {rowTasks.map((task) => (
+        <Task key={task.id} task={task} type="DEFAULT" />
+      ))}
     </div>
   );
 };

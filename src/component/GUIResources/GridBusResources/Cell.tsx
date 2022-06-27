@@ -1,5 +1,8 @@
+import { useExpandedRowsContext } from "@store/ExpandedRowsContext";
 import { IFakeResourceRecord, ITimeInterval } from "@store/FakeResourceRecord";
+import { IShift } from "@utils/fakeData";
 import { format } from "date-fns";
+import { useCallback } from "react";
 import { GridChildComponentProps } from "react-window";
 import "./GridBusResources.css";
 
@@ -12,12 +15,41 @@ export const Cell = ({
   rowIndex,
   columnIndex,
 }: GridChildComponentProps<IFakeResourceRecord[]>) => {
+  const { handleToggleExpandedRow } = useExpandedRowsContext();
   const { shift } = data[rowIndex];
+
+  const handleDbClick = useCallback(() => {
+    handleToggleExpandedRow(rowIndex, shift.id);
+  }, []);
+
+  const getTemplate = () => {
+    switch (columnIndex) {
+      case 0:
+        return <EmployeeCell {...shift} />;
+      case 1:
+        return <WorkingHoursCell {...shift} />;
+      case 2:
+        return <PDACell {...shift} />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="cell" style={{ ...style }}>
-      {columnIndex == 0
-        ? shift.name
-        : shiftFormat([shift.scheduledStart, shift.scheduledEnd])}
+    <div className="row" style={{ ...style }} onDoubleClick={handleDbClick}>
+      {getTemplate()}
     </div>
   );
 };
+
+type ResourceCellProps = IShift;
+
+const EmployeeCell = ({ name }: ResourceCellProps) => <div>{name}</div>;
+
+const WorkingHoursCell = ({ resource }: ResourceCellProps) => (
+  <div>
+    {resource.firstName} {resource.lastName}
+  </div>
+);
+
+const PDACell = ({ resource }: ResourceCellProps) => <div>{resource.pda}</div>;

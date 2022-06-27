@@ -1,32 +1,33 @@
+import { getMinutesInDay } from "@utils/time";
+import { forwardRef } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import {
-  IFakeResourceRecord,
-  useFakeResourceRecord,
-} from "@store/FakeResourceRecord";
-import { forwardRef } from "react";
-import {
-  VariableSizeGrid as Grid,
   GridChildComponentProps,
   GridProps,
+  VariableSizeGrid as Grid,
 } from "react-window";
-import { getMinutesInDay } from "@utils/time";
 
+import {
+  useExpandedRowsContext,
+  _baseExpandedRow,
+} from "@store/ExpandedRowsContext";
+import { useFakeResourceRecord } from "@store/FakeResourceRecord";
 import "../TimeLine/Timeline.css";
+import { TimelineTasks } from "../TimeLine/TimelineTasks";
 
 type UnallocatedTimeLineProps = Partial<GridProps>;
-
 const UnallocatedTimeLine = ({
   innerRef,
   onScroll,
 }: UnallocatedTimeLineProps) => {
-  const { resourceRows: allResourceRows } = useFakeResourceRecord();
-  const resourceRows = [...allResourceRows].shift() as IFakeResourceRecord;
-  const getRowHeight = () => resourceRows.height;
+  const { unfoldingRows } = useExpandedRowsContext();
+
+  const getRowHeight = () => unfoldingRows[_baseExpandedRow].height;
 
   return (
     <AutoSizer style={{ height: "100%" }}>
       {({ height, width }) => (
-        <Grid<IFakeResourceRecord[]>
+        <Grid
           ref={innerRef}
           style={{ height: "100%" }}
           height={height}
@@ -35,7 +36,7 @@ const UnallocatedTimeLine = ({
           rowHeight={getRowHeight}
           columnCount={3}
           columnWidth={() => getMinutesInDay * 7}
-          itemData={[resourceRows]}
+          itemData={[1]}
           onScroll={onScroll}
         >
           {ChartRow}
@@ -45,17 +46,22 @@ const UnallocatedTimeLine = ({
   );
 };
 
-const ChartRow = ({
-  style,
-  data,
-  rowIndex,
-}: GridChildComponentProps<IFakeResourceRecord[]>) => (
-  <div className="row" style={style}>
-    <span>
-      {`resourceData.title: ${data[rowIndex]?.shift.id} \n ${data[rowIndex]?.shift.name}`}
-    </span>
-  </div>
-);
+const ChartRow = ({ style }: GridChildComponentProps) => {
+  const { unfoldingRows } = useExpandedRowsContext();
+  const { tasks } = useFakeResourceRecord();
+  const unallocatedTasks = tasks.filter(
+    (task) => task.shiftId === "unallocated"
+  );
+
+  return (
+    <div className="row" style={style}>
+      <TimelineTasks
+        tasks={unallocatedTasks}
+        offsets={unfoldingRows["unallocated"].taskOffsets}
+      />
+    </div>
+  );
+};
 
 export default forwardRef<Grid, UnallocatedTimeLineProps>(
   function UnallocatedTimeLineRef(props, ref) {

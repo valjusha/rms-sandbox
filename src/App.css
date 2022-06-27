@@ -45,15 +45,12 @@ main {
 .footer-tasks {
   height: 100%;
   width: 100%;
-  background-color: wheat;
-  background-image: linear-gradient(to right, black 1px, white 1px);
-  background-size: 20px 100%;
+  background-color: rgb(205, 215, 165);
   flex: 1;
 }
 
 .aside {
-  /*width: 210px;*/
-  background: red;
+  padding-top: 60px;
   height: 100%;
 }
 

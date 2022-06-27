@@ -18,8 +18,10 @@
     "baseUrl": "./",
     "paths": {
       "@component/*": ["src/component/*"],
-      "@store/*": ["src/store/*"],
+      "@constants/*": ["src/constants/*"],
       "@hook/*": ["src/hook/*"],
+      "@store/*": ["src/store/*"],
+      "@type/*": ["src/types/*"],
       "@utils/*": ["src/utils/*"]
     }
   },
