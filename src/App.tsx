@@ -1,4 +1,4 @@
-import { GridBusResources, Timeline, UnallocatedTimeLine } from "@component/GUIResources";
+import { GridBusResources, Timeline, UnallocatedTimeline } from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
 import { useEventListener } from "@hook/useEventListener";
 import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
@@ -11,8 +11,6 @@ import { useRef } from "react";
 import "./App.css";
 
 function App() {
-  const rmsRef = useRef<HTMLDivElement>(null);
-
   // todo туда же
   const workflowRef = useRef<HTMLElement>(null);
   const {
@@ -22,7 +20,8 @@ function App() {
     unallocatedHeight,
     saveUnallocatedHeight,
   } = useGUIResourcesContext();
-  const { unallocatedMinSize } = useUnallocatedMinSize(rmsRef);
+  const { unallocatedMinSize } = useUnallocatedMinSize();
+  const { setRmsRef } = useGUIResourcesContext()
 
   const handleWheelWorkflowContainer = (event: WheelEvent) => {
     if (event.altKey) {
@@ -45,7 +44,7 @@ function App() {
         <header className="app-header">
           <Header />
         </header>
-        <div className="rms" ref={rmsRef}>
+        <div className="rms" ref={setRmsRef}>
           <Allotment vertical onChange={saveUnallocatedHeight}>
             <Allotment.Pane>
               <section className="container" ref={workflowRef}>
@@ -69,7 +68,7 @@ function App() {
               minSize={0}
               preferredSize={unallocatedHeight?.toString()}
             >
-              <UnallocatedTimeLine />
+              <UnallocatedTimeline />
             </Allotment.Pane>
           </Allotment>
         </div>

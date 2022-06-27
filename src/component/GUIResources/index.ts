@@ -13,4 +13,4 @@ export { GridBusResources } from "./GridBusResources";
 export { Timeline } from "./TimeLine";
 // зона сетки незапланированных задач
 // (упрощенная часть зона сетки основного таймлайна)
-export { UnallocatedTimeLine } from "./UnallocatedTimeLine";
+export { UnallocatedTimeline } from "./UnallocatedTimeline";

@@ -1,6 +1,6 @@
 import { IValue, useLocalStorage } from "@hook/useLocalStorage";
 import { useTimelineContext } from "@store/TimelineProvider";
-import { IGetGridRef, IGetRef, ISetGridRef, ISetRef, ISize } from "@store/types";
+import { IGetDivRef, IGetGridRef, IGetRef, ISetDivRef, ISetGridRef, ISetRef, ISize } from "@store/types";
 import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
 import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
 
@@ -15,6 +15,8 @@ interface IResourcesAreaContext {
   getGridBusInnerRef: IGetRef,
   setUnallocatedGridRef: ISetGridRef,
   getUnallocatedGridRef: IGetGridRef,
+  setRmsRef: ISetDivRef,
+  getRmsRef: IGetDivRef,
   gridBusMaxSize: ISize | null,
   gridBusWidth: IValue,
   unallocatedHeight: IValue,
@@ -31,6 +33,7 @@ const ResourcesAreaContext =
 export const ResourcesAreaProvider: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
+  const rmsRef = useRef<HTMLDivElement | null>(null)
   const gridBusRef = useRef<Grid | null>(null)
   const gridBusInnerRef = useRef<HTMLElement | null>(null)
   const unallocatedGridRef = useRef<Grid | null>(null)
@@ -55,15 +58,19 @@ export const ResourcesAreaProvider: React.FC<{
 
   const getGridBusInnerRef: IResourcesAreaContext["getGridBusInnerRef"] = () => gridBusInnerRef.current
 
-  const setGridBusRef: IResourcesAreaContext["setGridBusRef"] = (ref) => gridBusRef.current = ref
+  const setRmsRef: IResourcesAreaContext["setRmsRef"] = (ref) => rmsRef.current = ref
 
-  const getGridBusRef: IResourcesAreaContext["getGridBusRef"] = () => gridBusRef.current
+  const getRmsRef: IResourcesAreaContext["getRmsRef"] = () => rmsRef.current
 
   const setUnallocatedGridRef: IResourcesAreaContext["setUnallocatedGridRef"] =
     (ref) => unallocatedGridRef.current = ref
 
   const getUnallocatedGridRef: IResourcesAreaContext["getUnallocatedGridRef"] =
     () => unallocatedGridRef.current
+
+  const setGridBusRef: IResourcesAreaContext["setGridBusRef"] = (ref) => gridBusRef.current = ref
+
+  const getGridBusRef: IResourcesAreaContext["getGridBusRef"] = () => gridBusRef.current
 
   const saveGridBusWidth:ISaveSize = (widths) => {
     if (widths.length === 2) {
@@ -113,6 +120,7 @@ export const ResourcesAreaProvider: React.FC<{
       setGridBusRef, getGridBusRef,
       setGridBusInnerRef, getGridBusInnerRef,
       setUnallocatedGridRef, getUnallocatedGridRef,
+      setRmsRef, getRmsRef,
       gridBusMaxSize, gridBusWidth, unallocatedHeight,
       saveGridBusWidth, saveUnallocatedHeight,
       handleGridBusScroll, handleUnallocatedGridScroll, handleTimelineGridScroll

@@ -1,10 +1,10 @@
-import { UnallocatedAside } from "@component/GUIResources/UnallocatedTimeLine/UnallocatedAside";
-import { UnallocatedGrid } from "@component/GUIResources/UnallocatedTimeLine/UnallocatedGrid";
+import { UnallocatedAside } from "@component/GUIResources/UnallocatedTimeline/UnallocatedAside";
+import { UnallocatedGrid } from "@component/GUIResources/UnallocatedTimeline/UnallocatedGrid";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 import "../TimeLine/Timeline.css";
 
-export const UnallocatedTimeLine = () => {
+export const UnallocatedTimeline = () => {
   return (
     <section className="unallocated">
       <UnallocatedAside />
