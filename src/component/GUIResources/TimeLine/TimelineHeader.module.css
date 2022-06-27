@@ -10,7 +10,7 @@
   top: 0;
   flex-direction: row;
   background-color: white;
-  height: 60px;
+  /*height: 60px;*/
   overflow: hidden;
   box-shadow: 0 -4px 10px #a0a6b1;
 }
@@ -30,6 +30,16 @@
 
 .steps {
   display: flex;
+}
+
+.stepWrapper {
+  height: 10px;
+  display: flex;
+  align-items: end;
+}
+
+.stepDash {
+  border-left: 1px solid #666565FF;
 }
 
 .timeStep {

@@ -33,7 +33,10 @@ const TimelineHeader = () => {
                   className={timelineHeaderStyle.timeStep}
                   style={{ width: `${stepWidth}px` }}
                 >
-                  {date}
+                  <span>{date}</span>
+                  <div className={timelineHeaderStyle.stepWrapper}>
+                    <div className={timelineHeaderStyle.stepDash} style={{ height: "5px" }} />
+                  </div>
                 </div>
               ))}
             </div>

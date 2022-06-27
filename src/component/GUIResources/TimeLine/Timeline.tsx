@@ -11,7 +11,7 @@ const Timeline = () => {
   return (
     <section ref={setTimelineRef} className="timeline">
       <TimelineHeader />
-      <AutoSizer style={{ width: "100%", height: "100%" }}>
+      <AutoSizer style={{ position: "relative", width: "100%", height: "100%" }}>
         {({ height, width }) => (
           <TimelineGrid height={height} width={width} />
         )}

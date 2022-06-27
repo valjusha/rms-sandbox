@@ -1,3 +1,4 @@
+import timelineHeaderStyle from "@component/GUIResources/TimeLine/TimelineHeader.module.css";
 import timeStepStyle from "@component/GUIResources/TimeLine/TimelineHeader.module.css";
 import { useStep30Minute } from "@hook/useStep30Minute";
 import { useDatesShift } from "@store/DatesShift";
@@ -16,7 +17,7 @@ const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width }) => {
   const { setGridRef } = useTimelineContext()
   const { resourceRows } = useFakeResourceRecord();
   const shifts = useDatesShift();
-  const { columnWidth } = useStep30Minute();
+  const { stepWidth, steps, columnWidth } = useStep30Minute();
   const { handleTimelineGridScroll } = useGUIResourcesContext();
 
   const getRowHeight = (index: number) => resourceRows[index].height;
@@ -24,21 +25,50 @@ const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width }) => {
   const getColumnWidth = () => columnWidth;
 
   return (
-    <Grid<IFakeResourceRecord[]>
-      ref={setGridRef}
-      style={{ width: "100%", height: "100%" }}
-      height={height}
-      width={width}
-      rowCount={resourceRows.length} // todo
-      rowHeight={getRowHeight}
-      columnCount={shifts.length}
-      columnWidth={getColumnWidth}
-      itemData={[...resourceRows]}
-      innerElementType={innerElementType}
-      onScroll={handleTimelineGridScroll}
-    >
-      {ChartRow}
-    </Grid>
+    <>
+      <div style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%"
+      }}>
+        {shifts.map((day) => (
+          <div
+            key={day.getTime()}
+            style={{
+              display: "flex",
+              width: `${columnWidth}px`,
+              height: "100%"
+            }}
+          >
+            {steps.map((date, index) => (
+              <div
+                key={`${index}::${date}`}
+                style={{
+                  width: `${stepWidth}px`,
+                  height: "100%",
+                  borderLeft: "1px solid #bbb"
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      <Grid<IFakeResourceRecord[]>
+        ref={setGridRef}
+        style={{ width: "100%", height: "100%" }}
+        height={height}
+        width={width}
+        rowCount={resourceRows.length} // todo
+        rowHeight={getRowHeight}
+        columnCount={shifts.length}
+        columnWidth={getColumnWidth}
+        itemData={[...resourceRows]}
+        innerElementType={innerElementType}
+        onScroll={handleTimelineGridScroll}
+      >
+        {ChartRow}
+      </Grid>
+    </>
   );
 };
 
