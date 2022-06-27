@@ -1,4 +1,5 @@
-import { VariableSizeGrid as Grid } from "react-window";
+import React from "react";
+import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
 
 export type ISetGridRef = (r: Grid) => void
 export type IGetGridRef = () => Grid | null
@@ -8,6 +9,10 @@ export type IGetRef = () => HTMLElement | null
 
 export type ISetDivRef = (r: HTMLDivElement) => void
 export type IGetDivRef = () => HTMLDivElement | null
+
+export type IHandleGridScroll = (props: GridOnScrollProps) => void
+
+export type IHandleRefScroll<T> = (props: React.UIEvent<T, UIEvent>) => void
 
 export interface ISize {
   height: number | undefined,

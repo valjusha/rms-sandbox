@@ -1,14 +1,20 @@
-import { useEventListener } from "@hook/useEventListener";
 import { IValue, useLocalStorage } from "@hook/useLocalStorage";
 import { useWheelRms } from "@hook/useWheelRms";
 import { useTimelineContext } from "@store/TimelineProvider";
-import { IGetDivRef, IGetGridRef, IGetRef, ISetDivRef, ISetGridRef, ISetRef, ISize } from "@store/types";
+import {
+  IGetDivRef,
+  IGetGridRef,
+  IGetRef,
+  IHandleGridScroll,
+  ISetDivRef,
+  ISetGridRef,
+  ISetRef,
+  ISize
+} from "@store/types";
 import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
-import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
+import { VariableSizeGrid as Grid } from "react-window";
 
 type ISaveSize = (sizes: number[]) => void
-
-type IHandleScroll = (props: GridOnScrollProps) => void
 
 interface IResourcesAreaContext {
   setGridBusRef: ISetGridRef,
@@ -24,9 +30,9 @@ interface IResourcesAreaContext {
   unallocatedHeight: IValue,
   saveGridBusWidth: ISaveSize,
   saveUnallocatedHeight: ISaveSize,
-  handleGridBusScroll: IHandleScroll,
-  handleUnallocatedGridScroll: IHandleScroll,
-  handleTimelineGridScroll: IHandleScroll
+  handleGridBusScroll: IHandleGridScroll,
+  handleUnallocatedGridScroll: IHandleGridScroll,
+  handleTimelineGridScroll: IHandleGridScroll
 }
 
 const ResourcesAreaContext =

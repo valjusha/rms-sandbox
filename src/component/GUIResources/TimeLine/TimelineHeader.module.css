@@ -11,8 +11,14 @@
   flex-direction: row;
   background-color: white;
   /*height: 60px;*/
-  overflow: hidden;
   box-shadow: 0 -4px 10px #a0a6b1;
+  overflow-x: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.stickyContent::-webkit-scrollbar {
+  display: none;
 }
 
 .background {

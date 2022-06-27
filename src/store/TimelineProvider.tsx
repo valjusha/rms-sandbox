@@ -1,5 +1,14 @@
-import { IGetGridRef, IGetRef, ISetGridRef, ISetRef } from "@store/types";
-import React, { createContext, Dispatch, SetStateAction, useContext, useRef, useState } from 'react';
+import {
+  IGetDivRef,
+  IGetGridRef,
+  IGetRef,
+  IHandleGridScroll,
+  IHandleRefScroll,
+  ISetDivRef,
+  ISetGridRef,
+  ISetRef
+} from "@store/types";
+import React, { createContext, useContext, useRef } from 'react';
 import { VariableSizeGrid as Grid } from "react-window";
 
 /**
@@ -8,10 +17,12 @@ import { VariableSizeGrid as Grid } from "react-window";
 interface ITimelineContext {
   setTimelineRef: ISetRef,
   getTimelineRef: IGetRef,
-  setHeaderRef: ISetRef,
-  getHeaderRef: IGetRef,
+  setHeaderRef: ISetDivRef,
+  getHeaderRef: IGetDivRef,
   setGridRef: ISetGridRef,
-  getGridRef: IGetGridRef
+  getGridRef: IGetGridRef,
+  handleHeaderScroll: IHandleRefScroll<HTMLDivElement>,
+  handleGridScroll: IHandleGridScroll
 }
 
 const TimelineContext =
@@ -21,7 +32,7 @@ export const TimelineProvider: React.FC<{
   children: React.ReactNode
 }> = ({ children }) => {
   const timelineRef = useRef<HTMLElement | null>(null)
-  const headerRef = useRef<HTMLElement | null>(null)
+  const headerRef = useRef<HTMLDivElement | null>(null)
   const gridRef = useRef<Grid | null>(null)
 
   const setTimelineRef: ITimelineContext["setTimelineRef"] = (ref) => timelineRef.current = ref
@@ -33,6 +44,21 @@ export const TimelineProvider: React.FC<{
   const setGridRef: ITimelineContext["setGridRef"] = (ref) => gridRef.current = ref
   const getGridRef: ITimelineContext["getGridRef"] = () => gridRef.current
 
+  const handleHeaderScroll: ITimelineContext["handleHeaderScroll"] = (event) => {
+    if (getGridRef()) {
+      getGridRef()!.scrollTo({ scrollLeft: event.currentTarget.scrollLeft })
+    }
+  }
+
+  const handleGridScroll: ITimelineContext["handleGridScroll"] = ({
+    scrollLeft,
+    scrollUpdateWasRequested
+  }) => {
+    if (!scrollUpdateWasRequested && getHeaderRef()) {
+      getHeaderRef()!.scrollLeft = scrollLeft
+    }
+  }
+
   return (
     <TimelineContext.Provider value={{
       setTimelineRef,
@@ -40,7 +66,9 @@ export const TimelineProvider: React.FC<{
       setHeaderRef,
       getHeaderRef,
       setGridRef,
-      getGridRef
+      getGridRef,
+      handleHeaderScroll,
+      handleGridScroll
     }}>
       {children}
     </TimelineContext.Provider>
