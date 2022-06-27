@@ -1,4 +1,5 @@
 import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
+import { useTimelineContext } from "@store/TimelineProvider";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { VariableSizeGrid as Grid } from "react-window";
 import {
@@ -19,9 +20,19 @@ export const GridBusResources = () => {
     setGridBusInnerRef,
     handleGridBusScroll
   } = useGUIResourcesContext();
+  const { getHeaderRef } = useTimelineContext()
 
   return (
     <section className="aside">
+      <div style={{
+        height: getHeaderRef() ? `${getHeaderRef()!.clientHeight}px` : "0",
+        backgroundColor: "green",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }}>
+        GridBus Header
+      </div>
       <AutoSizer style={{ width: "100%" }}>
         {({ height, width }) => (
           <Grid<IFakeResourceRecord[]>
