@@ -1,4 +1,6 @@
+import { useEventListener } from "@hook/useEventListener";
 import { IValue, useLocalStorage } from "@hook/useLocalStorage";
+import { useWheelRms } from "@hook/useWheelRms";
 import { useTimelineContext } from "@store/TimelineProvider";
 import { IGetDivRef, IGetGridRef, IGetRef, ISetDivRef, ISetGridRef, ISetRef, ISize } from "@store/types";
 import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
@@ -114,6 +116,8 @@ export const ResourcesAreaProvider: React.FC<{
       getUnallocatedGridRef()?.scrollTo({ scrollLeft });
     }
   };
+
+  useWheelRms(rmsRef)
 
   return (
     <ResourcesAreaContext.Provider value={{

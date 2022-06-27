@@ -1,42 +1,23 @@
 import { GridBusResources, Timeline, UnallocatedTimeline } from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
-import { useEventListener } from "@hook/useEventListener";
-import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
+// import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
 import { DateContextProvider } from "@store/DatesShift";
 import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import "antd/dist/antd.css";
-import { useRef } from "react";
 import "./App.css";
 
 function App() {
-  // todo туда же
-  const workflowRef = useRef<HTMLElement>(null);
   const {
     gridBusMaxSize,
     gridBusWidth,
     saveGridBusWidth,
     unallocatedHeight,
     saveUnallocatedHeight,
+    setRmsRef
   } = useGUIResourcesContext();
-  const { unallocatedMinSize } = useUnallocatedMinSize();
-  const { setRmsRef } = useGUIResourcesContext()
-
-  const handleWheelWorkflowContainer = (event: WheelEvent) => {
-    if (event.altKey) {
-      event.preventDefault();
-      if (event.deltaY > 0) {
-        console.log("Down", event.deltaY);
-      } else {
-        console.log("Up", event.deltaY);
-      }
-    }
-  };
-
-  useEventListener("wheel", handleWheelWorkflowContainer, workflowRef, {
-    passive: false,
-  });
+  // const { unallocatedMinSize } = useUnallocatedMinSize();
 
   return (
     <DateContextProvider>
@@ -47,20 +28,18 @@ function App() {
         <div className="rms" ref={setRmsRef}>
           <Allotment vertical onChange={saveUnallocatedHeight}>
             <Allotment.Pane>
-              <section className="container" ref={workflowRef}>
-                <Allotment onChange={saveGridBusWidth}>
-                  <Allotment.Pane
-                    minSize={0}
-                    maxSize={gridBusMaxSize?.width}
-                    preferredSize={gridBusWidth?.toString()}
-                  >
-                      <GridBusResources />
-                  </Allotment.Pane>
-                  <Allotment.Pane>
-                    <Timeline />
-                  </Allotment.Pane>
-                </Allotment>
-              </section>
+              <Allotment onChange={saveGridBusWidth}>
+                <Allotment.Pane
+                  minSize={0}
+                  maxSize={gridBusMaxSize?.width}
+                  preferredSize={gridBusWidth?.toString()}
+                >
+                  <GridBusResources />
+                </Allotment.Pane>
+                <Allotment.Pane>
+                  <Timeline />
+                </Allotment.Pane>
+              </Allotment>
             </Allotment.Pane>
             <Allotment.Pane
               // todo: Вернуть после того как будет готов TimelineHeader
