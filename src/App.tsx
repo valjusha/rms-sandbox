@@ -42,17 +42,13 @@ function App() {
   return (
     <DateContextProvider>
       <div className="app">
-        <header className="App-header">
+        <header className="app-header">
           <Header />
         </header>
         <div className="rms" ref={rmsRef}>
           <Allotment vertical onChange={saveUnallocatedHeight}>
             <Allotment.Pane>
-              <section
-                className="container workflow"
-                ref={workflowRef}
-                style={{ display: "flex", height: "100%" }}
-              >
+              <section className="container" ref={workflowRef}>
                 <Allotment onChange={saveGridBusWidth}>
                   <Allotment.Pane
                     minSize={0}

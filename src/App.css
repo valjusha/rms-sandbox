@@ -14,7 +14,7 @@
   height: calc(100vh - 46px);
 }
 
-.App-header {
+.app-header {
   padding: 7px;
   background-color: white;
 }
@@ -26,7 +26,7 @@ main {
 }
 
 .container {
-  flex-grow: 1;
+  height: 100%;
 }
 
 .unallocated {
@@ -52,13 +52,11 @@ main {
 }
 
 .aside {
-  /*width: 210px;*/
   background: red;
   height: 100%;
 }
 
 .timeline {
-  flex: 1;
   height: 100%;
 }
 
