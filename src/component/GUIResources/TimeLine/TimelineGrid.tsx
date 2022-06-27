@@ -2,6 +2,7 @@ import timeStepStyle from "@component/GUIResources/TimeLine/TimelineHeader.modul
 import { useStep30Minute } from "@hook/useStep30Minute";
 import { useDatesShift } from "@store/DatesShift";
 import { IFakeResourceRecord, useFakeResourceRecord } from "@store/FakeResourceRecord";
+import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
 import { useTimelineContext } from "@store/TimelineProvider";
 import React, { forwardRef } from 'react';
 import { GridChildComponentProps, GridProps, VariableSizeGrid as Grid } from "react-window";
@@ -11,11 +12,12 @@ type TimeLineGridProps = Partial<GridProps> & {
   width: number
 };
 
-const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width, onScroll }) => {
+const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width }) => {
   const { setGridRef } = useTimelineContext()
   const { resourceRows } = useFakeResourceRecord();
   const shifts = useDatesShift();
   const { columnWidth } = useStep30Minute();
+  const { handleTimelineGridScroll } = useGUIResourcesContext();
 
   const getRowHeight = (index: number) => resourceRows[index].height;
 
@@ -33,7 +35,7 @@ const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width, onScroll }) 
       columnWidth={getColumnWidth}
       itemData={[...resourceRows]}
       innerElementType={innerElementType}
-      onScroll={onScroll}
+      onScroll={handleTimelineGridScroll}
     >
       {ChartRow}
     </Grid>

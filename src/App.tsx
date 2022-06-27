@@ -4,16 +4,13 @@ import { useEventListener } from "@hook/useEventListener";
 import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
 import { DateContextProvider } from "@store/DatesShift";
 import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
-import { useTimelineContext } from "@store/TimelineProvider";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import "antd/dist/antd.css";
 import { useRef } from "react";
-import { GridOnScrollProps } from "react-window";
 import "./App.css";
 
 function App() {
-  const { getGridRef } = useTimelineContext()
   const rmsRef = useRef<HTMLDivElement>(null);
 
   // todo туда же
@@ -24,8 +21,6 @@ function App() {
     saveGridBusWidth,
     unallocatedHeight,
     saveUnallocatedHeight,
-    getGridBusRef,
-    getUnallocatedGridRef
   } = useGUIResourcesContext();
   const { unallocatedMinSize } = useUnallocatedMinSize(rmsRef);
 
@@ -43,37 +38,6 @@ function App() {
   useEventListener("wheel", handleWheelWorkflowContainer, workflowRef, {
     passive: false,
   });
-
-  const handleResourceScroll = ({
-    scrollTop,
-    scrollUpdateWasRequested,
-  }: GridOnScrollProps) => {
-    if (scrollUpdateWasRequested === false && getGridRef()) {
-      getGridRef()?.scrollTo({ scrollTop });
-    }
-  };
-
-  const handleUnallocatedResourceScroll = ({
-    scrollLeft,
-    scrollUpdateWasRequested,
-  }: GridOnScrollProps) => {
-    if (scrollUpdateWasRequested === false && getGridRef()) {
-      getGridRef()?.scrollTo({ scrollLeft });
-    }
-  };
-
-  const handleTimelineGridScroll = ({
-    scrollTop,
-    scrollLeft,
-    scrollUpdateWasRequested,
-  }: GridOnScrollProps) => {
-    if (scrollUpdateWasRequested === false && getGridBusRef()) {
-      getGridBusRef()?.scrollTo({ scrollTop });
-    }
-    if (scrollUpdateWasRequested === false && getUnallocatedGridRef()) {
-      getUnallocatedGridRef()?.scrollTo({ scrollLeft });
-    }
-  };
 
   return (
     <DateContextProvider>
@@ -95,10 +59,10 @@ function App() {
                     maxSize={gridBusMaxSize?.width}
                     preferredSize={gridBusWidth?.toString()}
                   >
-                      <GridBusResources onScroll={handleResourceScroll} />
+                      <GridBusResources />
                   </Allotment.Pane>
                   <Allotment.Pane>
-                    <Timeline onGridScroll={handleTimelineGridScroll} />
+                    <Timeline />
                   </Allotment.Pane>
                 </Allotment>
               </section>
@@ -109,7 +73,7 @@ function App() {
               minSize={0}
               preferredSize={unallocatedHeight?.toString()}
             >
-              <UnallocatedTimeLine onScroll={handleUnallocatedResourceScroll} />
+              <UnallocatedTimeLine />
             </Allotment.Pane>
           </Allotment>
         </div>

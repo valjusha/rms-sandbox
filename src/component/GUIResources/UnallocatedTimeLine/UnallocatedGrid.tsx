@@ -11,11 +11,13 @@ type UnallocatedGridProps = Partial<GridProps> & {
 
 export const UnallocatedGrid: React.FC<UnallocatedGridProps> = ({
   height,
-  width,
-  onScroll
+  width
 }) => {
   const { resourceRows: allResourceRows } = useFakeResourceRecord();
-  const { setUnallocatedGridRef } = useGUIResourcesContext();
+  const {
+    setUnallocatedGridRef,
+    handleUnallocatedGridScroll
+  } = useGUIResourcesContext();
   const resourceRows = [...allResourceRows].shift() as IFakeResourceRecord;
   const getRowHeight = () => resourceRows.height;
 
@@ -30,7 +32,7 @@ export const UnallocatedGrid: React.FC<UnallocatedGridProps> = ({
       columnCount={3}
       columnWidth={() => getMinutesInDay * 7}
       itemData={[resourceRows]}
-      onScroll={onScroll}
+      onScroll={handleUnallocatedGridScroll}
     >
       {ChartRow}
     </Grid>

@@ -1,13 +1,10 @@
 import { UnallocatedAside } from "@component/GUIResources/UnallocatedTimeLine/UnallocatedAside";
 import { UnallocatedGrid } from "@component/GUIResources/UnallocatedTimeLine/UnallocatedGrid";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { GridProps, } from "react-window";
 
 import "../TimeLine/Timeline.css";
 
-type UnallocatedTimeLineProps = Partial<GridProps>;
-
-export const UnallocatedTimeLine = ({ onScroll }: UnallocatedTimeLineProps) => {
+export const UnallocatedTimeLine = () => {
   return (
     <section className="unallocated">
       <UnallocatedAside />
@@ -17,7 +14,6 @@ export const UnallocatedTimeLine = ({ onScroll }: UnallocatedTimeLineProps) => {
             <UnallocatedGrid
               height={height}
               width={width}
-              onScroll={onScroll}
             />
           )}
         </AutoSizer>
