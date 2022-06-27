@@ -1,12 +1,12 @@
 import { IValue, useLocalStorage } from "@hook/useLocalStorage";
-import { IGetInnerRef, ISetInnerRef, ISize } from "@store/types";
+import { IGetRef, ISetRef, ISize } from "@store/types";
 import React, { createContext, useCallback, useContext, useRef, useState } from 'react';
 
 type ISaveSize = (sizes: number[]) => void
 
 interface IResourcesAreaContext {
-  setGridBusInnerRef: ISetInnerRef,
-  getGridBusInnerRef: IGetInnerRef,
+  setGridBusInnerRef: ISetRef,
+  getGridBusInnerRef: IGetRef,
   gridBusMaxSize: ISize | null,
   gridBusWidth: IValue,
   unallocatedHeight: IValue,
@@ -26,7 +26,7 @@ export const ResourcesAreaProvider: React.FC<{
   const [gridBusWidth, setGridBusWidth] = useLocalStorage('gridBusWidth', null)
   const [unallocatedHeight, setUnallocatedHeight] = useLocalStorage('unallocatedHeight', null)
 
-  const setGridBusInnerRef: ISetInnerRef = useCallback((r) => {
+  const setGridBusInnerRef: ISetRef = useCallback((r) => {
     innerRef.current = r
     if (r) {
       // 14px - ширина скрола
@@ -37,7 +37,7 @@ export const ResourcesAreaProvider: React.FC<{
     }
   }, [])
 
-  const getGridBusInnerRef: IGetInnerRef = () => innerRef.current
+  const getGridBusInnerRef: IGetRef = () => innerRef.current
 
   const saveGridBusWidth:ISaveSize = (widths) => {
     if (widths.length === 2) {
