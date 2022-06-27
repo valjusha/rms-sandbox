@@ -6,26 +6,31 @@ import { format } from "date-fns";
 import React from 'react';
 
 const TimelineHeader = () => {
-  const { setHeaderRef } = useTimelineContext()
+  const { setHeaderRef, handleHeaderScroll } = useTimelineContext()
   const shifts = useDatesShift();
   const { stepWidth, steps, columnWidth } = useStep30Minute();
 
   return (
+    // todo: перенести компонент в TimelineGrid.innerElementType чтобы избавиться от синхронизации ?
+    // Не нравится что в innerElementType будут рендерятся сами элементы для grid и так же header (странная структура)
     <header
-      ref={setHeaderRef}
       className={timelineHeaderStyle.wrapper}
       style={{ backgroundSize: `${stepWidth}px 100%` }}
     >
-      <div className={timelineHeaderStyle.stickyContent}>
+      <div
+        ref={setHeaderRef}
+        className={timelineHeaderStyle.stickyContent}
+        onScroll={handleHeaderScroll}
+      >
         {shifts.map((day) => (
           <div
             className={timelineHeaderStyle.day}
             key={day.getTime()}
             style={{ width: `${columnWidth}px` }}
           >
-            <span className={timelineHeaderStyle.date} style={{ color: "#6b707c" }}>
+            <div className={timelineHeaderStyle.date} style={{ color: "#6b707c" }}>
               {format(day, "dd-MM-yyyy")}
-            </span>
+            </div>
             <div className={timelineHeaderStyle.steps}>
               {steps.map((date, index) => (
                 <div
@@ -33,7 +38,8 @@ const TimelineHeader = () => {
                   className={timelineHeaderStyle.timeStep}
                   style={{ width: `${stepWidth}px` }}
                 >
-                  {date}
+                  <span>{date}</span>
+                  <div className={timelineHeaderStyle.stepDash} style={{ height: "5px" }} />
                 </div>
               ))}
             </div>

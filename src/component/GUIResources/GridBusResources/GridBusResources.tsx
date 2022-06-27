@@ -1,12 +1,10 @@
-// todo rename BusResource
 import { useExpandedRowsContext } from "@store/ExpandedRowsContext";
 import {
-  useFakeResourceRecord,
-  IFakeResourceRecord,
+  IFakeResourceRecord, useFakeResourceRecord
 } from "@store/FakeResourceRecord";
 import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
+import { useTimelineContext } from "@store/TimelineProvider";
 import { get } from "lodash";
-import { forwardRef } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { GridProps, VariableSizeGrid as Grid } from "react-window";
 import { Cell } from "./Cell";
@@ -22,7 +20,6 @@ export const GridBusResources = ({
 }: GridBusResourcesProps) => {
   const { unfoldingRows } = useExpandedRowsContext();
   const { resourceRows } = useFakeResourceRecord();
-  const { setGridBusInnerRef } = useGUIResourcesContext();
 
   const getRowHeight = (index: number) =>
     get(unfoldingRows[resourceRows[index].shift.id], "height", 30);
@@ -30,32 +27,44 @@ export const GridBusResources = ({
   const getColumnWidth = (index: number) =>
     index == 0 ? 135 : index == 1 ? 110 : 135;
 
+  const { setGridBusRef, setGridBusInnerRef, handleGridBusScroll } =
+    useGUIResourcesContext();
+
+  const { getHeaderRef } = useTimelineContext();
+
   return (
-    <AutoSizer style={{ width: "100%" }}>
-      {({ height, width }) => (
-        <Grid<IFakeResourceRecord[]>
-          ref={innerRef}
-          innerRef={setGridBusInnerRef}
-          style={{ width: "100%" }}
-          onScroll={onScroll}
-          width={width}
-          height={height}
-          rowCount={resourceRows.length}
-          rowHeight={getRowHeight}
-          columnCount={_columnsCount}
-          columnWidth={getColumnWidth}
-          estimatedRowHeight={30}
-          itemData={resourceRows}
-        >
-          {Cell}
-        </Grid>
-      )}
-    </AutoSizer>
+    <section className="aside">
+      <div
+        style={{
+          height: getHeaderRef() ? `${getHeaderRef()!.clientHeight}px` : "0",
+          backgroundColor: "green",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        GridBus Header
+      </div>
+      <AutoSizer style={{ width: "100%" }}>
+        {({ height, width }) => (
+          <Grid<IFakeResourceRecord[]>
+            ref={innerRef}
+            innerRef={setGridBusInnerRef}
+            style={{ width: "100%" }}
+            onScroll={onScroll}
+            width={width}
+            height={height}
+            rowCount={resourceRows.length}
+            rowHeight={getRowHeight}
+            columnCount={_columnsCount}
+            columnWidth={getColumnWidth}
+            estimatedRowHeight={30}
+            itemData={resourceRows}
+          >
+            {Cell}
+          </Grid>
+        )}
+      </AutoSizer>
+    </section>
   );
 };
-
-export default forwardRef<Grid, GridBusResourcesProps>(
-  function GridBusResourcesRef(props, ref) {
-    return <GridBusResources innerRef={ref} {...props} />;
-  }
-);

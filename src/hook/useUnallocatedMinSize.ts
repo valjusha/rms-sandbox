@@ -1,11 +1,13 @@
 import { IFakeResourceRecord, useFakeResourceRecord } from "@store/FakeResourceRecord";
+import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
 import { useTimelineContext } from "@store/TimelineProvider";
-import { RefObject, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-export const useUnallocatedMinSize = (rmsRef: RefObject<HTMLDivElement>) => {
+export const useUnallocatedMinSize = () => {
   const { getGridRef } = useTimelineContext()
   const { resourceRows } = useFakeResourceRecord();
   const [unallocatedMinSize, setUnallocatedMinSize] = useState(0)
+  const { getRmsRef } = useGUIResourcesContext()
 
   useEffect(() => {
     const ref = getGridRef()
@@ -14,8 +16,8 @@ export const useUnallocatedMinSize = (rmsRef: RefObject<HTMLDivElement>) => {
       const { itemData } = ref.props
       const contentHeight = itemData.reduce((a: number, b: IFakeResourceRecord) => a + b.height, 0)
 
-      if (rmsRef.current && rmsRef.current?.offsetHeight - contentHeight > 0) {
-        setUnallocatedMinSize(rmsRef.current?.offsetHeight - contentHeight)
+      if (getRmsRef() && getRmsRef()!.offsetHeight - contentHeight > 0) {
+        setUnallocatedMinSize(getRmsRef()!.offsetHeight - contentHeight)
       } else {
         setUnallocatedMinSize(0)
       }

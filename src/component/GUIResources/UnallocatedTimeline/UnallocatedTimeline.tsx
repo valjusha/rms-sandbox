@@ -16,7 +16,7 @@ import "../TimeLine/Timeline.css";
 import { TimelineTasks } from "../TimeLine/TimelineTasks";
 
 type UnallocatedTimeLineProps = Partial<GridProps>;
-const UnallocatedTimeLine = ({
+export const UnallocatedTimeLine = ({
   innerRef,
   onScroll,
 }: UnallocatedTimeLineProps) => {

@@ -14,7 +14,7 @@
   height: calc(100vh - 46px);
 }
 
-.App-header {
+.app-header {
   padding: 7px;
   background-color: white;
 }
@@ -26,15 +26,15 @@ main {
 }
 
 .container {
-  flex-grow: 1;
+  height: 100%;
 }
 
-.footer {
+.unallocated {
   height: 100%;
   display: flex;
 }
 
-.footer-unallocated {
+.unallocated-aside {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,7 +42,7 @@ main {
   overflow: hidden;
 }
 
-.footer-tasks {
+.unallocated-grid {
   height: 100%;
   width: 100%;
   background-color: rgb(205, 215, 165);
@@ -50,13 +50,13 @@ main {
 }
 
 .aside {
-  padding-top: 60px;
   height: 100%;
 }
 
 .timeline {
-  flex: 1;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .App {
@@ -78,7 +78,6 @@ main {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
 
 .App-link {
   color: #61dafb;

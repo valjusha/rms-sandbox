@@ -11,8 +11,14 @@
   flex-direction: row;
   background-color: white;
   height: 60px;
-  overflow: hidden;
   box-shadow: 0 -4px 10px #a0a6b1;
+  overflow-x: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.stickyContent::-webkit-scrollbar {
+  display: none;
 }
 
 .background {
@@ -22,7 +28,10 @@
   background-image: linear-gradient(to right, #d8d8d8 1px, white 1px);
 }
 
-.day {}
+.day {
+  display: flex;
+  flex-direction: column;
+}
 
 .date {
   font-size: 16px;
@@ -30,8 +39,22 @@
 
 .steps {
   display: flex;
+  height: 100%;
+}
+
+.stepWrapper {
+  height: 10px;
+  display: flex;
+  align-items: end;
+}
+
+.stepDash {
+  border-left: 1px solid #666565FF;
 }
 
 .timeStep {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   font-size: 13px;
 }
