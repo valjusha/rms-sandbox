@@ -1,64 +1,27 @@
+import { UnallocatedAside } from "@component/GUIResources/UnallocatedTimeLine/UnallocatedAside";
+import { UnallocatedGrid } from "@component/GUIResources/UnallocatedTimeLine/UnallocatedGrid";
 import AutoSizer from "react-virtualized-auto-sizer";
-import {
-  IFakeResourceRecord,
-  useFakeResourceRecord,
-} from "@store/FakeResourceRecord";
-import { forwardRef } from "react";
-import {
-  VariableSizeGrid as Grid,
-  GridChildComponentProps,
-  GridProps,
-} from "react-window";
-import { getMinutesInDay } from "@utils/time";
+import { GridProps, } from "react-window";
 
 import "../TimeLine/Timeline.css";
 
 type UnallocatedTimeLineProps = Partial<GridProps>;
 
-const UnallocatedTimeLine = ({
-  innerRef,
-  onScroll,
-}: UnallocatedTimeLineProps) => {
-  const { resourceRows: allResourceRows } = useFakeResourceRecord();
-  const resourceRows = [...allResourceRows].shift() as IFakeResourceRecord;
-  const getRowHeight = () => resourceRows.height;
-
+export const UnallocatedTimeLine = ({ onScroll }: UnallocatedTimeLineProps) => {
   return (
-    <AutoSizer style={{ height: "100%" }}>
-      {({ height, width }) => (
-        <Grid<IFakeResourceRecord[]>
-          ref={innerRef}
-          style={{ height: "100%" }}
-          height={height}
-          width={width}
-          rowCount={1}
-          rowHeight={getRowHeight}
-          columnCount={3}
-          columnWidth={() => getMinutesInDay * 7}
-          itemData={[resourceRows]}
-          onScroll={onScroll}
-        >
-          {ChartRow}
-        </Grid>
-      )}
-    </AutoSizer>
+    <section className="unallocated">
+      <UnallocatedAside />
+      <div className="unallocated-grid">
+        <AutoSizer style={{ height: "100%" }}>
+          {({ height, width }) => (
+            <UnallocatedGrid
+              height={height}
+              width={width}
+              onScroll={onScroll}
+            />
+          )}
+        </AutoSizer>
+      </div>
+    </section>
   );
 };
-
-const ChartRow = ({
-  style,
-  data,
-  rowIndex,
-}: GridChildComponentProps<IFakeResourceRecord[]>) => (
-  <div className="row" style={style}>
-    <span>
-      {`resourceData.title: ${data[rowIndex]?.shift.id} \n ${data[rowIndex]?.shift.name}`}
-    </span>
-  </div>
-);
-
-export default forwardRef<Grid, UnallocatedTimeLineProps>(
-  function UnallocatedTimeLineRef(props, ref) {
-    return <UnallocatedTimeLine innerRef={ref} {...props} />;
-  }
-);

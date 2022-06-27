@@ -29,12 +29,12 @@ main {
   flex-grow: 1;
 }
 
-.footer {
+.unallocated {
   height: 100%;
   display: flex;
 }
 
-.footer-unallocated {
+.unallocated-aside {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,7 +42,7 @@ main {
   overflow: hidden;
 }
 
-.footer-tasks {
+.unallocated-grid {
   height: 100%;
   width: 100%;
   background-color: wheat;

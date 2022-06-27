@@ -1,3 +1,3 @@
-import UnallocatedTimeLineForwardRef from "./UnallocatedTimeLine";
+import { UnallocatedTimeLine } from "./UnallocatedTimeLine";
 
-export { UnallocatedTimeLineForwardRef };
+export { UnallocatedTimeLine };

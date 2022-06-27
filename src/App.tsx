@@ -1,4 +1,4 @@
-import { GridBusResources, Timeline, UnallocatedTimeLineForwardRef } from "@component/GUIResources";
+import { GridBusResources, Timeline, UnallocatedTimeLine } from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
 import { useEventListener } from "@hook/useEventListener";
 import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
@@ -9,13 +9,12 @@ import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import "antd/dist/antd.css";
 import { useRef } from "react";
-import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
+import { GridOnScrollProps } from "react-window";
 import "./App.css";
 
 function App() {
   const { getGridRef } = useTimelineContext()
   const rmsRef = useRef<HTMLDivElement>(null);
-  const unallocatedResourceRef = useRef<Grid>(null);
 
   // todo туда же
   const workflowRef = useRef<HTMLElement>(null);
@@ -25,7 +24,8 @@ function App() {
     saveGridBusWidth,
     unallocatedHeight,
     saveUnallocatedHeight,
-    getGridBusRef
+    getGridBusRef,
+    getUnallocatedGridRef
   } = useGUIResourcesContext();
   const { unallocatedMinSize } = useUnallocatedMinSize(rmsRef);
 
@@ -70,8 +70,8 @@ function App() {
     if (scrollUpdateWasRequested === false && getGridBusRef()) {
       getGridBusRef()?.scrollTo({ scrollTop });
     }
-    if (scrollUpdateWasRequested === false && unallocatedResourceRef.current) {
-      unallocatedResourceRef.current?.scrollTo({ scrollLeft });
+    if (scrollUpdateWasRequested === false && getUnallocatedGridRef()) {
+      getUnallocatedGridRef()?.scrollTo({ scrollLeft });
     }
   };
 
@@ -109,20 +109,7 @@ function App() {
               minSize={0}
               preferredSize={unallocatedHeight?.toString()}
             >
-              <section className="footer">
-                <div
-                  className="footer-unallocated"
-                  style={{ width: `${gridBusWidth}px` }}
-                >
-                  Незапланированнаяы
-                </div>
-                <div className="footer-tasks">
-                  <UnallocatedTimeLineForwardRef
-                    onScroll={handleUnallocatedResourceScroll}
-                    ref={unallocatedResourceRef}
-                  />
-                </div>
-              </section>
+              <UnallocatedTimeLine onScroll={handleUnallocatedResourceScroll} />
             </Allotment.Pane>
           </Allotment>
         </div>

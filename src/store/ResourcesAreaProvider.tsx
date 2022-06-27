@@ -10,6 +10,8 @@ interface IResourcesAreaContext {
   getGridBusRef: IGetGridRef,
   setGridBusInnerRef: ISetRef,
   getGridBusInnerRef: IGetRef,
+  setUnallocatedGridRef: ISetGridRef,
+  getUnallocatedGridRef: IGetGridRef,
   gridBusMaxSize: ISize | null,
   gridBusWidth: IValue,
   unallocatedHeight: IValue,
@@ -25,6 +27,7 @@ export const ResourcesAreaProvider: React.FC<{
 }> = ({ children }) => {
   const gridBusRef = useRef<Grid | null>(null)
   const gridBusInnerRef = useRef<HTMLElement | null>(null)
+  const unallocatedGridRef = useRef<Grid | null>(null)
   const [gridBusMaxSize, setGridBusMaxSize] = useState<ISize | null>(null)
 
   const [gridBusWidth, setGridBusWidth] = useLocalStorage('gridBusWidth', null)
@@ -46,6 +49,11 @@ export const ResourcesAreaProvider: React.FC<{
   const setGridBusRef: IResourcesAreaContext["setGridBusRef"] = (ref) => gridBusRef.current = ref
   const getGridBusRef: IResourcesAreaContext["getGridBusRef"] = () => gridBusRef.current
 
+  const setUnallocatedGridRef: IResourcesAreaContext["setUnallocatedGridRef"] =
+    (ref) => unallocatedGridRef.current = ref
+  const getUnallocatedGridRef: IResourcesAreaContext["getUnallocatedGridRef"] =
+    () => unallocatedGridRef.current
+
   const saveGridBusWidth:ISaveSize = (widths) => {
     if (widths.length === 2) {
       setGridBusWidth(widths[0])
@@ -62,6 +70,7 @@ export const ResourcesAreaProvider: React.FC<{
     <ResourcesAreaContext.Provider value={{
       setGridBusRef, getGridBusRef,
       setGridBusInnerRef, getGridBusInnerRef,
+      setUnallocatedGridRef, getUnallocatedGridRef,
       gridBusMaxSize, gridBusWidth, unallocatedHeight,
       saveGridBusWidth, saveUnallocatedHeight
     }}>
