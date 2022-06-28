@@ -14,6 +14,7 @@ import {
 import { useFakeResourceRecord } from "@store/FakeResourceRecord";
 import "../TimeLine/Timeline.css";
 import { TimelineTasks } from "../TimeLine/TimelineTasks";
+import { UnallocatedAside } from "./UnallocatedAside";
 
 type UnallocatedTimeLineProps = Partial<GridProps>;
 export const UnallocatedTimeLine = ({
@@ -25,24 +26,29 @@ export const UnallocatedTimeLine = ({
   const getRowHeight = () => unfoldingRows[_baseExpandedRow].height;
 
   return (
-    <AutoSizer style={{ height: "100%" }}>
-      {({ height, width }) => (
-        <Grid
-          ref={innerRef}
-          style={{ height: "100%" }}
-          height={height}
-          width={width}
-          rowCount={1}
-          rowHeight={getRowHeight}
-          columnCount={3}
-          columnWidth={() => getMinutesInDay * 7}
-          itemData={[1]}
-          onScroll={onScroll}
-        >
-          {ChartRow}
-        </Grid>
-      )}
-    </AutoSizer>
+    <section className="unallocated">
+      <UnallocatedAside />
+      <div className="unallocated-grid">
+        <AutoSizer style={{ height: "100%" }}>
+          {({ height, width }) => (
+            <Grid
+              ref={innerRef}
+              style={{ height: "100%" }}
+              height={height}
+              width={width}
+              rowCount={1}
+              rowHeight={getRowHeight}
+              columnCount={3}
+              columnWidth={() => getMinutesInDay * 7}
+              itemData={[1]}
+              onScroll={onScroll}
+            >
+              {ChartRow}
+            </Grid>
+          )}
+        </AutoSizer>
+      </div>
+    </section>
   );
 };
 

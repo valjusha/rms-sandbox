@@ -45,14 +45,14 @@ function App() {
                     <GridBusResources />
                   </Allotment.Pane>
                   <Allotment.Pane>
-                    <Timeline onGridScroll={handleTimelineGridScroll} />
+                    <Timeline />
                   </Allotment.Pane>
                 </Allotment>
               </Allotment.Pane>
               <Allotment.Pane
                 // todo: Вернуть после того как будет готов TimelineHeader
                 // minSize={unallocatedMinSize}
-                minSize={0}
+                minSize={60}
                 preferredSize={unallocatedHeight?.toString()}
               >
                 <UnallocatedTimeLine />
