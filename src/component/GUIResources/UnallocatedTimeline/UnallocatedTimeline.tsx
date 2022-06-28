@@ -10,8 +10,8 @@ import {
 import {
   useExpandedRowsContext,
   _baseExpandedRow,
-} from "@store/ExpandedRowsContext";
-import { useFakeResourceRecord } from "@store/FakeResourceRecord";
+} from "@store/context/ExpandedRowsContext";
+import { useFakeResourceRecord } from "@store/context/FakeResourceRecord";
 import "../TimeLine/Timeline.css";
 import { TimelineTasks } from "../TimeLine/TimelineTasks";
 

@@ -1,6 +1,6 @@
-import { IFakeResourceRecord, useFakeResourceRecord } from "@store/FakeResourceRecord";
-import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
-import { useTimelineContext } from "@store/TimelineProvider";
+import { IFakeResourceRecord, useFakeResourceRecord } from "@store/context/FakeResourceRecord";
+import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
+import { useTimelineContext } from "@store/context/TimelineProvider";
 import { useEffect, useState } from "react";
 
 export const useUnallocatedMinSize = () => {

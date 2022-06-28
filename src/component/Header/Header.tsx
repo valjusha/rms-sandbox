@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form, InputNumber } from "antd";
-import { useFakeResourceRecord } from "@store/FakeResourceRecord";
+import { useFakeResourceRecord } from "@store/context/FakeResourceRecord";
 
 export const Header = () => {
   const { formData, updateFormData } = useFakeResourceRecord();

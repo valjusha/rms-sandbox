@@ -1,5 +1,5 @@
-import { useExpandedRowsContext } from "@store/ExpandedRowsContext";
-import { IFakeResourceRecord, ITimeInterval } from "@store/FakeResourceRecord";
+import { useExpandedRowsContext } from "@store/context/ExpandedRowsContext";
+import { IFakeResourceRecord, ITimeInterval } from "@store/context/FakeResourceRecord";
 import { IShift } from "@utils/fakeData";
 import { format } from "date-fns";
 import { useCallback } from "react";

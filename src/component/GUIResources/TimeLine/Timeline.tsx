@@ -1,6 +1,6 @@
 import TimelineGrid from "@component/GUIResources/TimeLine/TimelineGrid";
 import TimelineHeader from "@component/GUIResources/TimeLine/TimelineHeader";
-import { useTimelineContext } from "@store/TimelineProvider";
+import { useTimelineContext } from "@store/context/TimelineProvider";
 import React from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import "./Timeline.css";

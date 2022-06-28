@@ -1,4 +1,4 @@
-import { ExpandedRows } from "@store/ExpandedRowsContext";
+import { ExpandedRows } from "@store/context/ExpandedRowsContext";
 import { TaskTypeString } from "@type/RMSBus";
 import { ITask } from "@utils/fakeData";
 import { differenceInMinutes, format, startOfDay, subDays } from "date-fns";

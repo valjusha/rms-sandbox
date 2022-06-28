@@ -1,3 +1,5 @@
+import { getShifts } from "@store/redux/domain/shifts/slice";
+import { getTasks } from "@store/redux/domain/tasks/slice";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import {
@@ -7,14 +9,21 @@ import {
 } from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
 // import { useUnallocatedMinSize } from "@hook/useUnallocatedMinSize";
-import { DateContextProvider } from "@store/DatesShift";
-import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
+import { DateContextProvider } from "@store/context/DatesShift";
+import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import "antd/dist/antd.css";
 import "./App.css";
+import { useDispatch } from "react-redux";
 
 function App() {
+  const dispatch = useDispatch()
+
+  // todo: сравнить конфиг с проектом ООП и убрать any
+  dispatch<any>(getTasks())
+  dispatch<any>(getShifts())
+
   const {
     gridBusMaxSize,
     gridBusWidth,

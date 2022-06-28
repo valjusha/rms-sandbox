@@ -8,8 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.2",
     "allotment": "^1.14.2",
     "antd": "^4.21.3",
+    "axios": "^0.27.2",
     "date-fns": "^2.28.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
@@ -17,8 +19,10 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dnd-mouse-backend": "^1.0.0-rc.2",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.0.2",
     "react-virtualized-auto-sizer": "^1.0.6",
-    "react-window": "^1.8.7"
+    "react-window": "^1.8.7",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.3.0",

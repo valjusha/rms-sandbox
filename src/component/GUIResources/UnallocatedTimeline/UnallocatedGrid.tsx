@@ -1,5 +1,5 @@
-import { IFakeResourceRecord, useFakeResourceRecord } from "@store/FakeResourceRecord";
-import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
+import { IFakeResourceRecord, useFakeResourceRecord } from "@store/context/FakeResourceRecord";
+import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
 import { getMinutesInDay } from "@utils/time";
 import React from 'react';
 import { GridChildComponentProps, GridProps, VariableSizeGrid as Grid } from "react-window";

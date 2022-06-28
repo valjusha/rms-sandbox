@@ -1,7 +1,7 @@
 import timelineHeaderStyle from "@component/GUIResources/TimeLine/TimelineHeader.module.css";
 import { useStep30Minute } from "@hook/useStep30Minute";
-import { useDatesShift } from "@store/DatesShift";
-import { useTimelineContext } from "@store/TimelineProvider";
+import { useDatesShift } from "@store/context/DatesShift";
+import { useTimelineContext } from "@store/context/TimelineProvider";
 import { format } from "date-fns";
 import React from 'react';
 

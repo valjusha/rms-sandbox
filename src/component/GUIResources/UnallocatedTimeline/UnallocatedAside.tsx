@@ -1,4 +1,4 @@
-import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
+import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
 import React from 'react';
 
 export const UnallocatedAside = () => {

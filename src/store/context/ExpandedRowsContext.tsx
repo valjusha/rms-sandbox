@@ -1,5 +1,5 @@
-import { useFakeResourceRecord } from "@store/FakeResourceRecord";
-import { useTimelineContext } from "@store/TimelineProvider";
+import { useFakeResourceRecord } from "@store/context/FakeResourceRecord";
+import { useTimelineContext } from "@store/context/TimelineProvider";
 import { IShift, ITask } from "@utils/fakeData";
 import { groupBy } from "lodash";
 import {

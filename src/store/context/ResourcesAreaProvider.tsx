@@ -1,6 +1,6 @@
 import { IValue, useLocalStorage } from "@hook/useLocalStorage";
 import { useWheelRms } from "@hook/useWheelRms";
-import { useTimelineContext } from "@store/TimelineProvider";
+import { useTimelineContext } from "@store/context/TimelineProvider";
 import {
   IGetDivRef,
   IGetGridRef,

@@ -1,12 +1,12 @@
 import { useStep30Minute } from "@hook/useStep30Minute";
-import { useDatesShift } from "@store/DatesShift";
-import { useExpandedRowsContext } from "@store/ExpandedRowsContext";
+import { useDatesShift } from "@store/context/DatesShift";
+import { useExpandedRowsContext } from "@store/context/ExpandedRowsContext";
 import {
   IFakeResourceRecord,
   useFakeResourceRecord,
-} from "@store/FakeResourceRecord";
-import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
-import { useTimelineContext } from "@store/TimelineProvider";
+} from "@store/context/FakeResourceRecord";
+import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
+import { useTimelineContext } from "@store/context/TimelineProvider";
 import { get } from "lodash";
 import React, { forwardRef } from "react";
 import {
