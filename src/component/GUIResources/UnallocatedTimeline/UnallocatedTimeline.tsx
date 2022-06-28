@@ -12,15 +12,15 @@ import {
   _baseExpandedRow,
 } from "@store/ExpandedRowsContext";
 import { useFakeResourceRecord } from "@store/FakeResourceRecord";
+import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
 import { TimelineTasks } from "../TimeLine/TimelineTasks";
 import { UnallocatedAside } from "./UnallocatedAside";
 import "../TimeLine/Timeline.css";
 
 type UnallocatedTimeLineProps = Partial<GridProps>;
-export const UnallocatedTimeLine = ({
-  innerRef,
-  onScroll,
-}: UnallocatedTimeLineProps) => {
+export const UnallocatedTimeLine = ({ innerRef }: UnallocatedTimeLineProps) => {
+  const { setUnallocatedGridRef, handleUnallocatedGridScroll } =
+    useGUIResourcesContext();
   const { unfoldingRows } = useExpandedRowsContext();
   const getRowHeight = () => unfoldingRows?.[_baseExpandedRow]?.height || 30;
 
@@ -31,7 +31,8 @@ export const UnallocatedTimeLine = ({
         <AutoSizer style={{ height: "100%" }}>
           {({ height, width }) => (
             <Grid
-              ref={innerRef}
+              ref={setUnallocatedGridRef}
+              innerRef={innerRef}
               style={{ height: "100%" }}
               height={height}
               width={width}
@@ -40,7 +41,7 @@ export const UnallocatedTimeLine = ({
               columnCount={3}
               columnWidth={() => getMinutesInDay * 7}
               itemData={[1]}
-              onScroll={onScroll}
+              onScroll={handleUnallocatedGridScroll}
             >
               {ChartRow}
             </Grid>
