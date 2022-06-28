@@ -8,7 +8,6 @@ import { get } from "lodash";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { GridProps, VariableSizeGrid as Grid } from "react-window";
 import { Cell } from "./Cell";
-import "./GridBusResources.css";
 
 const _columnsCount = 3;
 

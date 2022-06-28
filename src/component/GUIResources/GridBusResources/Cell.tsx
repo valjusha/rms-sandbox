@@ -4,7 +4,7 @@ import { IShift } from "@utils/fakeData";
 import { format } from "date-fns";
 import { useCallback } from "react";
 import { GridChildComponentProps } from "react-window";
-import "./GridBusResources.css";
+import styles from "./GridBusResources.module.css";
 
 const shiftFormat = ([from, to]: ITimeInterval) =>
   `${format(from, "HH:mm")} : ${format(to, "HH:mm")}`;
@@ -42,12 +42,12 @@ export const Cell = ({
 
 type ResourceCellProps = IShift;
 
-const EmployeeCell = ({ name }: ResourceCellProps) => <div>{name}</div>;
+const EmployeeCell = ({ name }: ResourceCellProps) => <div className={styles.cellText}>{name}</div>;
 
 const WorkingHoursCell = ({ resource }: ResourceCellProps) => (
-  <div>
+  <div className={styles.cellText}>
     {resource.firstName} {resource.lastName}
   </div>
 );
 
-const PDACell = ({ resource }: ResourceCellProps) => <div>{resource.pda}</div>;
+const PDACell = ({ resource }: ResourceCellProps) => <div className={styles.cellText}>{resource.pda}</div>;
