@@ -1,9 +1,12 @@
 import { getFakeShifts, getFakeTask, IShift, ITask } from "@utils/fakeData";
+import { Dictionary, groupBy } from "lodash";
 import React, {
   createContext,
   useCallback,
   useContext,
-  useEffect, useState
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
 
 export interface FakeDataGenConfiguration {
@@ -23,9 +26,9 @@ export type IFakeResourceRecord = {
 };
 
 export type ITimeInterval = [Date, Date];
-
+export type Tasks = Map<IShift["id"], ITask[]>;
 export interface IFakeResourceRecordContext {
-  readonly tasks: ITask[];
+  readonly tasks: Tasks; // Dictionary<ITask[]>;
   readonly resourceRows: IFakeResourceRecord[];
   readonly formData: FakeDataGenConfiguration;
   updateFormData: (data: Partial<FakeDataGenConfiguration>) => void;
@@ -43,25 +46,28 @@ export const FakeResourceRecordProvider: React.FC<{
     initialFakeDataToGenerate
   );
 
-  const [tasks, setTasks] = useState<ITask[]>([]);
+  const [tasks, setTasks] = useState<Tasks>(new Map());
 
   const [rows, setRows] = useState<IFakeResourceRecord[]>([]);
 
   useEffect(() => {
     const { rows, items_per_row } = formData;
-    const shifts = getFakeShifts(formData.rows);
+    const shifts = getFakeShifts(rows);
 
     const shiftTasks = shifts
-      // .slice(10, shifts.length > 2 ? Math.floor(rows / 2) : undefined)
       .map((shift) => shift.id)
       .map((id) => getFakeTask(items_per_row, id))
       .flat();
 
-    const upRows = shifts.map((shift) => ({ shift }));
-    const upTasks = [...shiftTasks, ...getFakeTask(items_per_row)];
+    setRows(shifts.map((shift) => ({ shift })));
 
-    setRows(upRows);
-    setTasks(upTasks);
+    setTasks(
+      new Map(
+        Object.entries(
+          groupBy([...shiftTasks, ...getFakeTask(items_per_row)], "shiftId")
+        )
+      )
+    );
   }, [formData]);
 
   const updateFormData = useCallback(

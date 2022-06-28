@@ -12,9 +12,9 @@ import {
   _baseExpandedRow,
 } from "@store/ExpandedRowsContext";
 import { useFakeResourceRecord } from "@store/FakeResourceRecord";
-import "../TimeLine/Timeline.css";
 import { TimelineTasks } from "../TimeLine/TimelineTasks";
 import { UnallocatedAside } from "./UnallocatedAside";
+import "../TimeLine/Timeline.css";
 
 type UnallocatedTimeLineProps = Partial<GridProps>;
 export const UnallocatedTimeLine = ({
@@ -22,8 +22,7 @@ export const UnallocatedTimeLine = ({
   onScroll,
 }: UnallocatedTimeLineProps) => {
   const { unfoldingRows } = useExpandedRowsContext();
-
-  const getRowHeight = () => unfoldingRows[_baseExpandedRow].height;
+  const getRowHeight = () => unfoldingRows?.[_baseExpandedRow]?.height || 30;
 
   return (
     <section className="unallocated">
@@ -52,19 +51,22 @@ export const UnallocatedTimeLine = ({
   );
 };
 
-const ChartRow = ({ style }: GridChildComponentProps) => {
+const ChartRow = ({ columnIndex, style }: GridChildComponentProps) => {
   const { unfoldingRows } = useExpandedRowsContext();
   const { tasks } = useFakeResourceRecord();
-  const unallocatedTasks = tasks.filter(
-    (task) => task.shiftId === "unallocated"
-  );
+
+  const unallocatedTasks = tasks.get("unallocated") || [];
+
+  if (columnIndex > 0) return null;
 
   return (
     <div className="row" style={style}>
-      <TimelineTasks
-        tasks={unallocatedTasks}
-        offsets={unfoldingRows["unallocated"].taskOffsets}
-      />
+      {unallocatedTasks.length && (
+        <TimelineTasks
+          tasks={unallocatedTasks}
+          offsets={unfoldingRows["unallocated"]?.taskOffsets}
+        />
+      )}
     </div>
   );
 };

@@ -18,10 +18,7 @@ export const Cell = ({
   const { handleToggleExpandedRow } = useExpandedRowsContext();
   const { shift } = data[rowIndex];
 
-  const handleDbClick = useCallback(() => {
-    console.log('handleDbClick', rowIndex, shift.id)
-    handleToggleExpandedRow(rowIndex, shift.id);
-  }, []);
+  const handleDbClick = useCallback(() => handleToggleExpandedRow(rowIndex, shift.id), []);
 
   const getTemplate = () => {
     switch (columnIndex) {

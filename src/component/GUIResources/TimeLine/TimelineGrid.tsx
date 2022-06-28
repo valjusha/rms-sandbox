@@ -15,8 +15,8 @@ import {
   GridProps,
   VariableSizeGrid as Grid,
 } from "react-window";
-import { Task } from "../Task";
 import { TimelineRow } from "../TimelineRow";
+import { TimelineTasks } from "./TimelineTasks";
 
 type TimeLineGridProps = Partial<GridProps> & {
   height: number;
@@ -117,18 +117,23 @@ const ChartRow = ({
   style,
   data,
   rowIndex,
+  columnIndex,
 }: GridChildComponentProps<IFakeResourceRecord[]>) => {
+  const { id: shiftId } = data[rowIndex].shift;
   const { tasks } = useFakeResourceRecord();
-  const rowTasks = tasks.filter(
-    (task) => task.shiftId === data[rowIndex].shift.id
-  );
+  const { unfoldingRows } = useExpandedRowsContext();
+  const rowTasks = tasks.get(shiftId) || [];
 
   return (
     <div className="row" style={{ ...style, backgroundColor: "transparent" }}>
       <TimelineRow accept="DEFAULT" onDrop={(item) => console.log(item)} />
-      {rowTasks.map((task) => (
-        <Task key={task.id} task={task} type="DEFAULT" />
-      ))}
+
+      {!columnIndex && !!rowTasks.length && (
+        <TimelineTasks
+          tasks={rowTasks}
+          offsets={unfoldingRows?.[shiftId]?.taskOffsets}
+        />
+      )}
     </div>
   );
 };
