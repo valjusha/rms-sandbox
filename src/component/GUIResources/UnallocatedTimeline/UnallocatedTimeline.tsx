@@ -5,12 +5,13 @@ import {
   areEqual,
   GridChildComponentProps,
   GridProps,
-  VariableSizeGrid as Grid,
+  VariableSizeGrid as Grid
 } from "react-window";
 
+import { useStep30Minute } from "@hook/useStep30Minute";
 import {
   useExpandedRowsContext,
-  _baseExpandedRow,
+  _baseExpandedRow
 } from "@store/ExpandedRowsContext";
 import { useFakeResourceRecord } from "@store/FakeResourceRecord";
 import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
@@ -22,8 +23,10 @@ type UnallocatedTimeLineProps = Partial<GridProps>;
 export const UnallocatedTimeLine = ({ innerRef }: UnallocatedTimeLineProps) => {
   const { setUnallocatedGridRef, handleUnallocatedGridScroll } =
     useGUIResourcesContext();
+  const { columnWidth } = useStep30Minute();
   const { unfoldingRows } = useExpandedRowsContext();
   const getRowHeight = () => unfoldingRows?.[_baseExpandedRow]?.height || 30;
+  const getColumnWidth = () => columnWidth;
 
   return (
     <section className="unallocated">
@@ -40,8 +43,8 @@ export const UnallocatedTimeLine = ({ innerRef }: UnallocatedTimeLineProps) => {
               rowCount={1}
               rowHeight={getRowHeight}
               columnCount={3}
-              columnWidth={() => getMinutesInDay * 7}
-              itemData={[1]}
+              columnWidth={getColumnWidth}
+              itemData={['empty']}
               onScroll={handleUnallocatedGridScroll}
             >
               {ChartRow}
@@ -62,7 +65,7 @@ const ChartRow = memo(({ columnIndex, style }: GridChildComponentProps) => {
   if (columnIndex > 0) return null;
 
   return (
-    <div className="row" style={style}>
+    <div style={style}>
       {unallocatedTasks.length && (
         <TimelineTasks
           tasks={unallocatedTasks}

@@ -44,7 +44,7 @@ const ChartRow = ({
   data,
   rowIndex,
 }: GridChildComponentProps<IFakeResourceRecord[]>) => (
-  <div className="row" style={style}>
+  <div style={style}>
     <span>
       {`resourceData.title: ${data[rowIndex]?.shift.id} \n ${data[rowIndex]?.shift.name}`}
     </span>
