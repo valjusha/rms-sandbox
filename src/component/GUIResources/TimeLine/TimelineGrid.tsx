@@ -8,8 +8,9 @@ import {
 import { useGUIResourcesContext } from "@store/ResourcesAreaProvider";
 import { useTimelineContext } from "@store/TimelineProvider";
 import { get } from "lodash";
-import React, { forwardRef } from "react";
+import React, { forwardRef, memo } from "react";
 import {
+  areEqual,
   GridChildComponentProps,
   GridOnScrollProps,
   GridProps,
@@ -113,29 +114,32 @@ const ChartColumn = () => {
   );
 };
 
-const ChartRow = ({
-  style,
-  data,
-  rowIndex,
-  columnIndex,
-}: GridChildComponentProps<IFakeResourceRecord[]>) => {
-  const { id: shiftId } = data[rowIndex].shift;
-  const { tasks } = useFakeResourceRecord();
-  const { unfoldingRows } = useExpandedRowsContext();
-  const rowTasks = tasks.get(shiftId) || [];
+const ChartRow = memo(
+  ({
+    style,
+    data,
+    rowIndex,
+    columnIndex,
+  }: GridChildComponentProps<IFakeResourceRecord[]>) => {
+    const { id: shiftId } = data[rowIndex].shift;
+    const { tasks } = useFakeResourceRecord();
+    const { unfoldingRows } = useExpandedRowsContext();
+    const rowTasks = tasks.get(shiftId) || [];
 
-  return (
-    <div className="row" style={{ ...style, backgroundColor: "transparent" }}>
-      <TimelineRow accept="DEFAULT" onDrop={(item) => console.log(item)} />
+    return (
+      <div className="row" style={{ ...style, backgroundColor: "transparent" }}>
+        <TimelineRow accept="DEFAULT" onDrop={(item) => console.log(item)} />
 
-      {!columnIndex && !!rowTasks.length && (
-        <TimelineTasks
-          tasks={rowTasks}
-          offsets={unfoldingRows?.[shiftId]?.taskOffsets}
-        />
-      )}
-    </div>
-  );
-};
+        {!columnIndex && !!rowTasks.length && (
+          <TimelineTasks
+            tasks={rowTasks}
+            offsets={unfoldingRows?.[shiftId]?.taskOffsets}
+          />
+        )}
+      </div>
+    );
+  },
+  areEqual
+);
 
 export default TimelineGrid;

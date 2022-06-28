@@ -1,7 +1,8 @@
 import { getMinutesInDay } from "@utils/time";
-import { forwardRef } from "react";
+import { forwardRef, memo } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import {
+  areEqual,
   GridChildComponentProps,
   GridProps,
   VariableSizeGrid as Grid,
@@ -52,7 +53,7 @@ export const UnallocatedTimeLine = ({ innerRef }: UnallocatedTimeLineProps) => {
   );
 };
 
-const ChartRow = ({ columnIndex, style }: GridChildComponentProps) => {
+const ChartRow = memo(({ columnIndex, style }: GridChildComponentProps) => {
   const { unfoldingRows } = useExpandedRowsContext();
   const { tasks } = useFakeResourceRecord();
 
@@ -70,7 +71,7 @@ const ChartRow = ({ columnIndex, style }: GridChildComponentProps) => {
       )}
     </div>
   );
-};
+}, areEqual);
 
 export default forwardRef<Grid, UnallocatedTimeLineProps>(
   function UnallocatedTimeLineRef(props, ref) {
