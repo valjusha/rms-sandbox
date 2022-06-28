@@ -1,3 +1,3 @@
-import { UnallocatedTimeLine } from "./UnallocatedTimeLine";
+import { UnallocatedTimeline } from "./UnallocatedTimeline";
 
-export { UnallocatedTimeLine };
+export { UnallocatedTimeline };

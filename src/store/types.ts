@@ -1,6 +1,7 @@
 import React from "react";
 import { GridOnScrollProps, VariableSizeGrid as Grid } from "react-window";
 
+// todo где хранить типы двух сторов?
 export type ISetGridRef = (r: Grid) => void
 export type IGetGridRef = () => Grid | null
 

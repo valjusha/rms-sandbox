@@ -9,6 +9,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useGUIResourcesContext } from "./ResourcesAreaProvider";
 
 type RowId = IShift["id"];
 
@@ -39,6 +40,7 @@ export const ExpandedRowsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [expandedRows, toggleExpandedRow] = useState<RowId[]>([
     _baseExpandedRow,
   ]);
+  const { getGridBusRef } = useGUIResourcesContext();
   const { getGridRef } = useTimelineContext();
   const { tasks } = useFakeResourceRecord();
 
@@ -54,8 +56,7 @@ export const ExpandedRowsProvider: React.FC<{ children: React.ReactNode }> = ({
       });
 
       getGridRef()?.resetAfterRowIndex(rowIndex);
-      // todo getGridRef().scrollTo
-      // todo getResourceRef().resetAfterRowIndex
+      getGridBusRef()?.resetAfterRowIndex(rowIndex);
     },
     [expandedRows]
   );

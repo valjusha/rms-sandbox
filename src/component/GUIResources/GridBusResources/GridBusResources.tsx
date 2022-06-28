@@ -16,7 +16,6 @@ type GridBusResourcesProps = Partial<GridProps>;
 
 export const GridBusResources = ({
   onScroll,
-  innerRef,
 }: GridBusResourcesProps) => {
   const { unfoldingRows } = useExpandedRowsContext();
   const { resourceRows } = useFakeResourceRecord();
@@ -48,7 +47,7 @@ export const GridBusResources = ({
       <AutoSizer style={{ width: "100%" }}>
         {({ height, width }) => (
           <Grid<IFakeResourceRecord[]>
-            ref={innerRef}
+            ref={setGridBusRef}
             innerRef={setGridBusInnerRef}
             style={{ width: "100%" }}
             onScroll={onScroll}

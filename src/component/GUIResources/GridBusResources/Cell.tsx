@@ -19,6 +19,7 @@ export const Cell = ({
   const { shift } = data[rowIndex];
 
   const handleDbClick = useCallback(() => {
+    console.log('handleDbClick', rowIndex, shift.id)
     handleToggleExpandedRow(rowIndex, shift.id);
   }, []);
 

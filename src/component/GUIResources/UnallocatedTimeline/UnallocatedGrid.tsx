@@ -1,3 +1,4 @@
+import { _baseExpandedRow, useExpandedRowsContext } from "@store/context/ExpandedRowsContext";
 import { IFakeResourceRecord, useFakeResourceRecord } from "@store/context/FakeResourceRecord";
 import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
 import { getMinutesInDay } from "@utils/time";
@@ -19,7 +20,8 @@ export const UnallocatedGrid: React.FC<UnallocatedGridProps> = ({
     handleUnallocatedGridScroll
   } = useGUIResourcesContext();
   const resourceRows = [...allResourceRows].shift() as IFakeResourceRecord;
-  const getRowHeight = () => resourceRows.height;
+  const { unfoldingRows } = useExpandedRowsContext();
+  const getRowHeight = () => unfoldingRows[_baseExpandedRow].height;
 
   return (
     <Grid<IFakeResourceRecord[]>

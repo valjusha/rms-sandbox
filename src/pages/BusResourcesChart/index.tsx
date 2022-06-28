@@ -1,4 +1,4 @@
-import { GridBusResources, Timeline, UnallocatedTimeLine } from "@component/GUIResources";
+import { GridBusResources, Timeline, UnallocatedTimeline } from "@component/GUIResources";
 import { Header } from "@component/Header/Header";
 import { useInitData } from "@hook/useInitData";
 import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
@@ -45,7 +45,7 @@ export const BusResourcesChart = () => {
             minSize={0}
             preferredSize={unallocatedHeight?.toString()}
           >
-            <UnallocatedTimeLine />
+            <UnallocatedTimeline />
           </Allotment.Pane>
         </Allotment>
       </div>
