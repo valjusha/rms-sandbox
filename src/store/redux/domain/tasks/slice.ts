@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getAllTasks } from "@services/task.service";
+import { fetchTasks } from "@services/task.service";
 import { ITask } from "@store/redux/domain/tasks/types";
 import { IReduxDataState } from "@store/redux/types";
 
@@ -16,7 +16,7 @@ const timeTypes = {
 export const getTasks = createAsyncThunk(
   'tasks/getTasks',
   async () => {
-    return await getAllTasks()
+    return await fetchTasks()
   }
 )
 

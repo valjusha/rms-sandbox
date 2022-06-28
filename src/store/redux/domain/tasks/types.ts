@@ -8,51 +8,43 @@ export enum ETaskState {
   CANCELED = "CANCELED",
 }
 
+export interface ITaskStatus {
+  id: string,
+  name: string,
+  description: string
+}
+
+export interface ITaskTransition {
+  id: string,
+  status: ITaskStatus,
+  displayName: string
+}
+
+export interface ITaskStatusesItem {
+  title: string,
+  relativeTime: string,
+  durationTime: string
+}
+
 export interface ITask {
   id: string,
   taskType: string,
   shiftId: string,
   flightId: string,
-  planStartDate: string,
-  planEndDate: string,
-  estimatedStartDate: string,
-  estimatedEndDate: string,
-  factStartDate: string,
-  factEndDate: string,
-  uiStartDate: string,
-  uiEndDate: string,
+  planStartDate: Date,
+  planEndDate: Date,
+  estimatedStartDate: Date | null,
+  estimatedEndDate: Date | null,
+  factStartDate: Date | null,
+  factEndDate: Date | null,
+  uiStartDate: Date,
+  uiEndDate: Date,
   state: ETaskState,
-  status: {
-    id: string,
-    name: string,
-    description: string
-  },
-  transitions: [
-    {
-      id: string,
-      status: {
-        id: string,
-        name: string,
-        description: string
-      },
-      displayName: string
-    }
-  ],
-  skills: [
-    string
-  ],
-  statuses: [
-    {
-      title: string,
-      relativeTime: string,
-      durationTime: string
-    }
-  ],
-  options: {
-    additionalProp1: string,
-    additionalProp2: string,
-    additionalProp3: string
-  },
+  status: ITaskStatus,
+  transitions: ITaskTransition[],
+  skills: string[],
+  statuses: ITaskStatusesItem[],
+  options: object,
   remark: string,
-  manual: true
+  manual: boolean
 }

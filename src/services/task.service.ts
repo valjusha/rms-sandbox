@@ -15,7 +15,7 @@ const taskAxiosInstance = axios.create({
 const TASK_ENDPOINT = '/api/v1/tasks'
 // const STAFF_ENDPOINT = '/api/v1/staff'
 
-export async function getAllTasks() {
+export async function fetchTasks() {
   return await taskAxiosInstance.get(TASK_ENDPOINT)
 }
 

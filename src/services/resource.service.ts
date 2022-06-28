@@ -13,12 +13,12 @@ const staffAxiosInstance = axios.create({
 })
 
 const SHIFTS_ENDPOINT = '/api/v1/shifts'
-// const EMPLOYEES_ENDPOINT = '/api/v1/employees'
+const EMPLOYEES_ENDPOINT = '/api/v1/employees'
 
 export async function fetchShifts() {
   return await staffAxiosInstance.get(SHIFTS_ENDPOINT)
 }
 
-// export async function fetchEmployeeById(id) {
-//   return await staffAxiosInstance.get(`${EMPLOYEES_ENDPOINT}/${id}`)
-// }
+export async function fetchEmployees() {
+  return await staffAxiosInstance.get(EMPLOYEES_ENDPOINT)
+}
