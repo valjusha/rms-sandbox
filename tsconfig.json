@@ -24,7 +24,8 @@
       "@services/*": ["src/services/*"],
       "@store/*": ["src/store/*"],
       "@type/*": ["src/types/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@wsUtils/*": ["src/wsUtils/*"]
     }
   },
   "references": [{ "path": "./tsconfig.node.json" }]

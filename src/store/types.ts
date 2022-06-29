@@ -19,3 +19,20 @@ export interface ISize {
   height: number | undefined,
   width: number | undefined
 }
+
+export enum RequestStatus {
+  IDLE = 'IDLE',
+  LOADING = 'LOADING',
+  UPDATING = 'UPDATING',
+  SUCCEEDED = 'SUCCEEDED',
+  FAILED = 'FAILED'
+}
+
+export enum EWebSocketStatus {
+  CONNECTED = 'CONNECTED',
+  CONNECTING = 'CONNECTING',
+  DISCONNECTED = 'DISCONNECTED',
+  STOMP_ERROR = 'STOMP_ERROR',
+  WS_CLOSED = 'WS_CLOSED',
+  WS_ERROR = 'WS_ERROR'
+}

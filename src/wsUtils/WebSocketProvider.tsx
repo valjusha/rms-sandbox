@@ -1,6 +1,6 @@
 import { getWebSocketErrors } from "@store/redux/common/webSocket/actions";
 import { setWebSocketStatus } from "@store/redux/common/webSocket/slice";
-import { EWebSocketStatus } from "@store/redux/types";
+import { EWebSocketStatus } from "@store/types";
 import React, { useEffect } from 'react';
 // import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch } from 'react-redux';

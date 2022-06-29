@@ -66,6 +66,6 @@ export const tasks = createSlice({
   }
 })
 
-export const {} = tasks.actions
+export const { updateTaskStatus, updateTaskTime } = tasks.actions
 
 export default tasks.reducer

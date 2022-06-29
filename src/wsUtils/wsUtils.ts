@@ -2,8 +2,8 @@ import { Client, messageCallbackType, StompHeaders } from '@stomp/stompjs';
 import { StompConfig } from '@stomp/stompjs/esm6/stomp-config';
 import { StompSubscription } from '@stomp/stompjs/esm6/stomp-subscription';
 import { IStompSocket } from '@stomp/stompjs/esm6/types';
-import { EWebSocketStatus } from "@store/redux/types";
-import sockjs from "sockjs-client/dist/sockjs"
+import { EWebSocketStatus } from "@store/types";
+import SockJS from "sockjs-client/dist/sockjs"
 
 interface StompClientType extends Omit<Client, 'webSocketFactory'> {
   webSocketFactory: (() => IStompSocket) | (() => WebSocket)
@@ -21,7 +21,7 @@ export namespace WS {
     client.webSocketFactory = function () {
       const parsedUrl = new URL(url, window.location.href);
       if (parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:') {
-        return new sockjs(url);
+        return new SockJS(url);
       }
       if (
         parsedUrl.protocol === 'ws:' ||

@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import rootWatcher from "@store/configSaga";
 import { rootReducer } from "@store/redux/rootReducer";
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import createSagaMiddleware from 'redux-saga';
 
-
-// const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware();
 
 const persistConfig = {
   key: 'root',
@@ -21,10 +22,10 @@ const store = configureStore({
     immutableCheck: true,
     serializableCheck: false,
     thunk: true
-  })
+  }).concat(sagaMiddleware)
 });
 
-// sagaMiddleware.run(rootWatcher);
+sagaMiddleware.run(rootWatcher);
 
 export const persistor = persistStore(store);
 

@@ -26,7 +26,7 @@ export const UnallocatedGrid: React.FC<UnallocatedGridProps> = ({
   } = useGUIResourcesContext();
   const resourceRows = [...allResourceRows].shift() as IShift;
   const { unfoldingRows } = useExpandedRowsContext();
-  const getRowHeight = () => unfoldingRows[_baseExpandedRow].height ? unfoldingRows[_baseExpandedRow].height : 30;
+  const getRowHeight = () => unfoldingRows[_baseExpandedRow] ? unfoldingRows[_baseExpandedRow].height : 30;
 
   return (
     <Grid<IShift[]>
@@ -56,7 +56,9 @@ const ChartRow = memo(({ columnIndex, style }: GridChildComponentProps) => {
 
   return (
     <div style={style}>
-      {unallocatedTasks.length && (
+      {/* При условном рендере внутри JSX лучше явно прописывать условие, в противном случае */}
+      {/* если unallocatedTasks.length = 0, значение "0" отрендерится в DOM */}
+      {unallocatedTasks.length !== 0 && (
         <TimelineTasks
           tasks={unallocatedTasks}
           offsets={unfoldingRows["unallocated"]?.taskOffsets}

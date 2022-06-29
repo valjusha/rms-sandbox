@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IWebSocket } from "@store/redux/common/webSocket/types";
-import { EWebSocketStatus } from "@store/redux/types";
+import { EWebSocketStatus } from "@store/types";
 
 const initialState: IWebSocket = {
   status: EWebSocketStatus.CONNECTING

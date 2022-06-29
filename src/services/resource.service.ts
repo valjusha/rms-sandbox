@@ -22,3 +22,7 @@ export async function fetchShifts() {
 export async function fetchEmployees() {
   return await staffAxiosInstance.get(EMPLOYEES_ENDPOINT)
 }
+
+export async function fetchEmployeeById(id: string) {
+  return await staffAxiosInstance.get(`${EMPLOYEES_ENDPOINT}/${id}`)
+}

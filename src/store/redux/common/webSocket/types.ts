@@ -1,4 +1,4 @@
-import { EWebSocketStatus } from "@store/redux/types";
+import { EWebSocketStatus } from "@store/types";
 
 export interface IWebSocket {
   status: EWebSocketStatus
