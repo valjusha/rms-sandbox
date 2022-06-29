@@ -7,21 +7,24 @@ import "allotment/dist/style.css";
 import "antd/dist/antd.css";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import WebSocketProvider from "./wsUtils/WebSocketProvider";
 
 function App() {
 
   return (
-    <TimelineProvider>
-      <ResourcesAreaProvider>
-        <ExpandedRowsProvider>
-          <DndProvider backend={HTML5Backend}>
-            <DateContextProvider>
-              <BusResourcesChart />
-            </DateContextProvider>
-          </DndProvider>
-        </ExpandedRowsProvider>
-      </ResourcesAreaProvider>
-    </TimelineProvider>
+    <WebSocketProvider>
+      <TimelineProvider>
+        <ResourcesAreaProvider>
+          <ExpandedRowsProvider>
+            <DndProvider backend={HTML5Backend}>
+              <DateContextProvider>
+                <BusResourcesChart />
+              </DateContextProvider>
+            </DndProvider>
+          </ExpandedRowsProvider>
+        </ResourcesAreaProvider>
+      </TimelineProvider>
+    </WebSocketProvider>
   );
 }
 

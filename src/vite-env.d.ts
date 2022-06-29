@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+declare module 'sockjs-client/dist/sockjs'
 
 /**
  * Nicely typed aliases for some `Object` Methods
@@ -10,3 +11,5 @@ type ObjectKeys<T> = T extends object ? (keyof T)[] : string[];
 interface ObjectConstructor {
   keys<T>(o: T): ObjectKeys<T>;
 }
+
+type EmptyCallback = () => void

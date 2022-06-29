@@ -21,7 +21,7 @@ function aliasWithTsConfig() {
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 3003,
+    port: 3000,
   },
   resolve: {
     alias: aliasWithTsConfig(),

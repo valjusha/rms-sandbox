@@ -26,7 +26,7 @@ export const UnallocatedGrid: React.FC<UnallocatedGridProps> = ({
   } = useGUIResourcesContext();
   const resourceRows = [...allResourceRows].shift() as IShift;
   const { unfoldingRows } = useExpandedRowsContext();
-  const getRowHeight = () => unfoldingRows[_baseExpandedRow].height;
+  const getRowHeight = () => unfoldingRows[_baseExpandedRow].height ? unfoldingRows[_baseExpandedRow].height : 30;
 
   return (
     <Grid<IShift[]>
