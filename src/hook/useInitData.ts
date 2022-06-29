@@ -12,9 +12,5 @@ export function useInitData() {
     dispatch<any>(getTasks())
     dispatch<any>(getShifts())
     dispatch<any>(getResources())
-
-    return () => {
-      console.log('unmounted')
-    }
   }, [])
 }

@@ -1,9 +1,13 @@
 import { TimelineTasks } from "@component/GUIResources/TimeLine/TimelineTasks";
 import { _baseExpandedRow, useExpandedRowsContext } from "@store/context/ExpandedRowsContext";
-import { IFakeResourceRecord, useFakeResourceRecord } from "@store/context/FakeResourceRecord";
+// import { useFakeResourceRecord } from "@store/context/FakeResourceRecord";
 import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
+import { shiftsSelector } from "@store/redux/domain/shifts/selectors";
+import { IShift } from "@store/redux/domain/shifts/types";
+import { mapTasksSelector, tasksSelector } from "@store/redux/domain/tasks/selectors";
 import { getMinutesInDay } from "@utils/time";
 import React, { memo } from 'react';
+import { useSelector } from "react-redux";
 import { areEqual, GridChildComponentProps, GridProps, VariableSizeGrid as Grid } from "react-window";
 
 type UnallocatedGridProps = Partial<GridProps> & {
@@ -15,17 +19,17 @@ export const UnallocatedGrid: React.FC<UnallocatedGridProps> = ({
   height,
   width
 }) => {
-  const { resourceRows: allResourceRows } = useFakeResourceRecord();
+  const allResourceRows = useSelector(shiftsSelector);
   const {
     setUnallocatedGridRef,
     handleUnallocatedGridScroll
   } = useGUIResourcesContext();
-  const resourceRows = [...allResourceRows].shift() as IFakeResourceRecord;
+  const resourceRows = [...allResourceRows].shift() as IShift;
   const { unfoldingRows } = useExpandedRowsContext();
   const getRowHeight = () => unfoldingRows[_baseExpandedRow].height;
 
   return (
-    <Grid<IFakeResourceRecord[]>
+    <Grid<IShift[]>
       ref={setUnallocatedGridRef}
       style={{ height: "100%" }}
       height={height}
@@ -44,7 +48,7 @@ export const UnallocatedGrid: React.FC<UnallocatedGridProps> = ({
 
 const ChartRow = memo(({ columnIndex, style }: GridChildComponentProps) => {
   const { unfoldingRows } = useExpandedRowsContext();
-  const { tasks } = useFakeResourceRecord();
+  const tasks = useSelector(mapTasksSelector);
 
   const unallocatedTasks = tasks.get("unallocated") || [];
 

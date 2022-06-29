@@ -1,6 +1,7 @@
-import { Tasks, useFakeResourceRecord } from "@store/context/FakeResourceRecord";
 import { useTimelineContext } from "@store/context/TimelineProvider";
-import { IShift } from "@utils/fakeData";
+import { IShift } from "@store/redux/domain/shifts/types";
+import { IMapTasks, mapTasksSelector, tasksSelector } from "@store/redux/domain/tasks/selectors";
+import { parseISO } from "date-fns";
 import { cloneDeep } from "lodash";
 import {
   createContext,
@@ -9,6 +10,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useSelector } from "react-redux";
 import { useGUIResourcesContext } from "./ResourcesAreaProvider";
 
 type RowId = IShift["id"];
@@ -40,7 +42,7 @@ export const ExpandedRowsProvider: React.FC<{ children: React.ReactNode }> = ({
   ]);
   const { getGridBusRef } = useGUIResourcesContext();
   const { getGridRef } = useTimelineContext();
-  const { tasks: fakeTasks } = useFakeResourceRecord();
+  const tasks = useSelector(mapTasksSelector);
 
   const handleToggleExpandedRow = useCallback(
     (rowIndex: number, id: RowId) => {
@@ -62,8 +64,8 @@ export const ExpandedRowsProvider: React.FC<{ children: React.ReactNode }> = ({
   const unfoldingRows = useMemo(() => {
     const rows: Record<string, ExpandedRows> = {};
 
-    const expandedRowTasks: Tasks = new Map(
-      [...cloneDeep(fakeTasks)].filter(([shiftId]) =>
+    const expandedRowTasks: IMapTasks = new Map(
+      [...cloneDeep(tasks)].filter(([shiftId]) =>
         expandedRows.some((id) => id === shiftId)
       )
     );
@@ -75,9 +77,9 @@ export const ExpandedRowsProvider: React.FC<{ children: React.ReactNode }> = ({
       const sortedTasks = tasks.sort((a, b) => {
         if (a.planStartDate === b.planStartDate) {
           // todo => type Date to number
-          return a.planEndDate.getTime() - b.planEndDate.getTime();
+          return parseISO(a.planEndDate).getTime() - parseISO(b.planEndDate).getTime();
         }
-        return a.planStartDate.getTime() - b.planStartDate.getTime();
+        return parseISO(a.planStartDate).getTime() - parseISO(b.planStartDate).getTime();
       });
 
       let rowOffset = 0;
@@ -88,11 +90,11 @@ export const ExpandedRowsProvider: React.FC<{ children: React.ReactNode }> = ({
         for (let index = 0; index < sortedTasks.length; index++) {
           const item = sortedTasks[index];
 
-          if (lastEnd === null || item.planStartDate.getTime() > lastEnd) {
+          if (lastEnd === null || parseISO(item.planStartDate).getTime() > lastEnd) {
             offsets[item.id] = rowOffset;
             sortedTasks.splice(index, 1);
             index--;
-            lastEnd = item.planEndDate.getTime();
+            lastEnd = parseISO(item.planEndDate).getTime();
           }
         }
         rowOffset++;
@@ -105,7 +107,7 @@ export const ExpandedRowsProvider: React.FC<{ children: React.ReactNode }> = ({
     });
 
     return rows;
-  }, [expandedRows, fakeTasks.size]);
+  }, [expandedRows, tasks.size]);
 
   return (
     <ExpandedRowsContext.Provider

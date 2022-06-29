@@ -6,4 +6,7 @@
 
 .cellText {
   user-select: none;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: pre;
 }

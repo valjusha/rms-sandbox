@@ -1,14 +1,14 @@
 import { useStep30Minute } from "@hook/useStep30Minute";
 import { useDatesShift } from "@store/context/DatesShift";
 import { useExpandedRowsContext } from "@store/context/ExpandedRowsContext";
-import {
-  IFakeResourceRecord,
-  useFakeResourceRecord,
-} from "@store/context/FakeResourceRecord";
 import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
 import { useTimelineContext } from "@store/context/TimelineProvider";
+import { shiftsSelector } from "@store/redux/domain/shifts/selectors";
+import { IShift } from "@store/redux/domain/shifts/types";
+import { mapTasksSelector, tasksSelector } from "@store/redux/domain/tasks/selectors";
 import { get } from "lodash";
 import React, { forwardRef, memo } from "react";
+import { useSelector } from "react-redux";
 import {
   areEqual,
   GridChildComponentProps,
@@ -26,7 +26,7 @@ type TimeLineGridProps = Partial<GridProps> & {
 
 const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width }) => {
   const { setGridRef, handleGridScroll } = useTimelineContext();
-  const { resourceRows } = useFakeResourceRecord();
+  const resourceRows = useSelector(shiftsSelector);
   const { unfoldingRows } = useExpandedRowsContext();
 
   const shifts = useDatesShift();
@@ -34,7 +34,7 @@ const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width }) => {
   const { handleTimelineGridScroll } = useGUIResourcesContext();
 
   const getRowHeight = (index: number) =>
-    get(unfoldingRows[resourceRows[index].shift.id], "height", 30);
+    get(unfoldingRows[resourceRows[index].id], "height", 30);
 
   const getColumnWidth = () => columnWidth;
 
@@ -45,7 +45,7 @@ const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width }) => {
 
   return (
     <>
-      <Grid<IFakeResourceRecord[]>
+      <Grid<IShift[]>
         ref={setGridRef}
         style={{ width: "100%", height: "100%" }}
         height={height}
@@ -120,9 +120,10 @@ const ChartRow = memo(
     data,
     rowIndex,
     columnIndex,
-  }: GridChildComponentProps<IFakeResourceRecord[]>) => {
-    const { id: shiftId } = data[rowIndex].shift;
-    const { tasks } = useFakeResourceRecord();
+  }: GridChildComponentProps<IShift[]>) => {
+    const shiftId = data[rowIndex].id;
+    // const { tasks } = useFakeResourceRecord();
+    const tasks = useSelector(mapTasksSelector);
     const { unfoldingRows } = useExpandedRowsContext();
     const rowTasks = tasks.get(shiftId) || [];
 

@@ -1,5 +1,5 @@
-import { ITask } from "@utils/fakeData";
-import { Task, TaskProps } from "../Task";
+import { ITask } from "@store/redux/domain/tasks/types";
+import { Task } from "../Task";
 
 export interface TimelineTasksProps {
   tasks: ITask[];

@@ -1,7 +1,6 @@
-import { ExpandedRows } from "@store/context/ExpandedRowsContext";
+import { ITask } from "@store/redux/domain/tasks/types";
 import { TaskTypeString } from "@type/RMSBus";
-import { ITask } from "@utils/fakeData";
-import { differenceInMinutes, format, startOfDay, subDays } from "date-fns";
+import { differenceInMinutes, format, parseISO, startOfDay, subDays } from "date-fns";
 import React, { CSSProperties, memo } from "react";
 import { useDrag } from "react-dnd";
 
@@ -9,7 +8,7 @@ const startDate = subDays(new Date(), 2);
 
 const alignLeft = (task: ITask, floatFixed = 2) => {
   const start = startOfDay(startDate).getTime();
-  const diff = differenceInMinutes(task.planStartDate, start);
+  const diff = differenceInMinutes(parseISO(task.uiStartDate), start);
 
   return (diff * 2).toFixed(floatFixed);
 };
@@ -35,8 +34,8 @@ export interface TaskProps {
   offset?: number;
   type: TaskTypeString;
 }
-const getWidth = ({ planEndDate, planStartDate }: ITask) => {
-  const diff = differenceInMinutes(planEndDate, planStartDate);
+const getWidth = ({ uiEndDate, uiStartDate }: ITask) => {
+  const diff = differenceInMinutes(parseISO(uiEndDate), parseISO(uiStartDate));
 
   return (diff * 2).toFixed(2);
 };
@@ -48,7 +47,7 @@ const getPosition = (task: ITask, offset: number): CSSProperties => ({
 });
 
 export const Task: React.FC<TaskProps> = memo(({ task, type, offset = 0 }) => {
-  const { id, planEndDate, planStartDate } = task;
+  const { id, uiEndDate, uiStartDate } = task;
   const [{ opacity }, drag] = useDrag(() => ({
     type,
     options: {
@@ -59,8 +58,12 @@ export const Task: React.FC<TaskProps> = memo(({ task, type, offset = 0 }) => {
       opacity: monitor.isDragging() ? 0.4 : 1,
     }),
   }));
-
   const diff = alignLeft(task);
+  if (task.shiftId === 'unallocated') {
+    console.log(">> ", task.shiftId, id, diff)
+  } else {
+    console.log(">>>> ", task.shiftId, id, diff)
+  }
   return (
     <div
       ref={drag}
@@ -73,9 +76,9 @@ export const Task: React.FC<TaskProps> = memo(({ task, type, offset = 0 }) => {
       }}
       data-testid="box"
     >
-      {format(planStartDate, "dd HH:mm")}
+      {format(parseISO(uiStartDate), "dd HH:mm")}
       {" — "}
-      {format(planEndDate, "dd HH:mm")}
+      {format(parseISO(uiEndDate), "dd HH:mm")}
     </div>
   );
 });

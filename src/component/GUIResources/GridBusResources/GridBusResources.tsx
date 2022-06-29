@@ -1,26 +1,24 @@
 import { useExpandedRowsContext } from "@store/context/ExpandedRowsContext";
-import {
-  IFakeResourceRecord, useFakeResourceRecord
-} from "@store/context/FakeResourceRecord";
 import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
 import { useTimelineContext } from "@store/context/TimelineProvider";
+import { shiftsSelector } from "@store/redux/domain/shifts/selectors";
+import { IShift } from "@store/redux/domain/shifts/types";
 import { get } from "lodash";
+import { useSelector } from "react-redux";
 import AutoSizer from "react-virtualized-auto-sizer";
-import { GridProps, VariableSizeGrid as Grid } from "react-window";
+import { VariableSizeGrid as Grid } from "react-window";
 import { Cell } from "./Cell";
 
 const _columnsCount = 3;
 
-type GridBusResourcesProps = Partial<GridProps>;
+// type GridBusResourcesProps = Partial<GridProps>;
 
-export const GridBusResources = ({
-  onScroll,
-}: GridBusResourcesProps) => {
+export const GridBusResources = () => {
   const { unfoldingRows } = useExpandedRowsContext();
-  const { resourceRows } = useFakeResourceRecord();
+  const resourceRows = useSelector(shiftsSelector);
 
   const getRowHeight = (index: number) =>
-    get(unfoldingRows[resourceRows[index].shift.id], "height", 30);
+    get(unfoldingRows[resourceRows[index].id], "height", 30);
 
   const getColumnWidth = (index: number) =>
     index == 0 ? 135 : index == 1 ? 110 : 135;
@@ -45,11 +43,11 @@ export const GridBusResources = ({
       </div>
       <AutoSizer style={{ width: "100%" }}>
         {({ height, width }) => (
-          <Grid<IFakeResourceRecord[]>
+          <Grid<IShift[]>
             ref={setGridBusRef}
             innerRef={setGridBusInnerRef}
             style={{ width: "100%" }}
-            onScroll={onScroll}
+            onScroll={handleGridBusScroll}
             width={width}
             height={height}
             rowCount={resourceRows.length}

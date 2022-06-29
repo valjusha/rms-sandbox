@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, Form, InputNumber } from "antd";
-import { useFakeResourceRecord } from "@store/context/FakeResourceRecord";
+// import { useFakeResourceRecord } from "@store/context/FakeResourceRecord";
 
 export const Header = () => {
-  const { formData, updateFormData } = useFakeResourceRecord();
-  const { rows, items_per_row } = formData;
+  // const { formData, updateFormData } = useFakeResourceRecord();
+  // const { rows, items_per_row } = formData;
 
   const handleZoomIn = () => {};
   const handleZoomOut = () => {};
@@ -13,14 +13,14 @@ export const Header = () => {
     <Form layout="inline">
       <Form.Item label="rows">
         <InputNumber
-          value={rows}
-          onChange={(e) => updateFormData({ rows: e })}
+          // value={rows}
+          // onChange={(e) => updateFormData({ rows: e })}
         />
       </Form.Item>
       <Form.Item label="items per row">
         <InputNumber
-          value={items_per_row}
-          onChange={(e) => updateFormData({ items_per_row: e })}
+          // value={items_per_row}
+          // onChange={(e) => updateFormData({ items_per_row: e })}
         />
       </Form.Item>
       <Form.Item>

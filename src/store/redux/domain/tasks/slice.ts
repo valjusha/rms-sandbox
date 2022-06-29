@@ -25,7 +25,7 @@ export const tasks = createSlice({
   initialState,
   reducers: {
     updateTaskStatus(state, action) {
-      const {status, taskId, transitions} = action.payload
+      const { status, taskId, transitions } = action.payload
       const task = state.data.find((t) => t.id === taskId)
       if (task) {
         task.status = status
@@ -33,7 +33,7 @@ export const tasks = createSlice({
       }
     },
     updateTaskTime(state, action) {
-      const {taskId, timeType, startTime, endTime} = action.payload
+      const { taskId, timeType, startTime, endTime } = action.payload
       const task = state.data.find((t) => t.id === taskId)
       if (task) {
         switch (timeType) {
@@ -56,7 +56,12 @@ export const tasks = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getTasks.fulfilled, (state, action) => {
-        state.data = action.payload.data
+        state.data = action.payload.data.map((task: ITask) => {
+          if (task.shiftId === null) {
+            task.shiftId = "unallocated"
+          }
+          return task
+        })
       })
   }
 })

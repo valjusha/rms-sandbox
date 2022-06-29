@@ -1,10 +1,10 @@
 export interface IResourceShift     {
   id: string,
   name: string,
-  scheduledStart: Date,
-  scheduledEnd: Date,
-  actualStart: Date | null,
-  actualEnd: Date | null
+  scheduledStart: string,
+  scheduledEnd: string,
+  actualStart: string | null,
+  actualEnd: string | null
 }
 
 export interface IResource {

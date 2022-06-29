@@ -1,6 +1,6 @@
 import { useExpandedRowsContext } from "@store/context/ExpandedRowsContext";
 import { IFakeResourceRecord, ITimeInterval } from "@store/context/FakeResourceRecord";
-import { IShift } from "@utils/fakeData";
+import { IShift } from "@store/redux/domain/shifts/types";
 import { format } from "date-fns";
 import { useCallback } from "react";
 import { GridChildComponentProps } from "react-window";
@@ -14,9 +14,9 @@ export const Cell = ({
   data,
   rowIndex,
   columnIndex,
-}: GridChildComponentProps<IFakeResourceRecord[]>) => {
+}: GridChildComponentProps<IShift[]>) => {
   const { handleToggleExpandedRow } = useExpandedRowsContext();
-  const { shift } = data[rowIndex];
+  const shift = data[rowIndex];
 
   const handleDbClick = useCallback(() => handleToggleExpandedRow(rowIndex, shift.id), []);
 
