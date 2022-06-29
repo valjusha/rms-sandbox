@@ -59,11 +59,6 @@ export const Task: React.FC<TaskProps> = memo(({ task, type, offset = 0 }) => {
     }),
   }));
   const diff = alignLeft(task);
-  if (task.shiftId === 'unallocated') {
-    console.log(">> ", task.shiftId, id, diff)
-  } else {
-    console.log(">>>> ", task.shiftId, id, diff)
-  }
   return (
     <div
       ref={drag}

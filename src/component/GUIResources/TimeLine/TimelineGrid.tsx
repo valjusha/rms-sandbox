@@ -52,7 +52,7 @@ const TimelineGrid: React.FC<TimeLineGridProps> = ({ height, width }) => {
         width={width}
         rowCount={resourceRows.length} // todo
         rowHeight={getRowHeight}
-        columnCount={shifts.length}
+        columnCount={1}
         columnWidth={getColumnWidth}
         itemData={[...resourceRows]}
         innerElementType={innerElementType}
