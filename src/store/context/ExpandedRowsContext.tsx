@@ -1,7 +1,7 @@
-import { useFakeResourceRecord } from "@store/context/FakeResourceRecord";
+import { Tasks, useFakeResourceRecord } from "@store/context/FakeResourceRecord";
 import { useTimelineContext } from "@store/context/TimelineProvider";
-import { IShift, ITask } from "@utils/fakeData";
-import { groupBy } from "lodash";
+import { IShift } from "@utils/fakeData";
+import { cloneDeep } from "lodash";
 import {
   createContext,
   useCallback,
@@ -12,8 +12,6 @@ import {
 import { useGUIResourcesContext } from "./ResourcesAreaProvider";
 
 type RowId = IShift["id"];
-
-type TasksGroup = Record<string | "unallocated", ITask[]>;
 
 export type ExpandedRows = {
   taskOffsets: Record<string, number>;
@@ -42,7 +40,7 @@ export const ExpandedRowsProvider: React.FC<{ children: React.ReactNode }> = ({
   ]);
   const { getGridBusRef } = useGUIResourcesContext();
   const { getGridRef } = useTimelineContext();
-  const { tasks } = useFakeResourceRecord();
+  const { tasks: fakeTasks } = useFakeResourceRecord();
 
   const handleToggleExpandedRow = useCallback(
     (rowIndex: number, id: RowId) => {
@@ -61,21 +59,16 @@ export const ExpandedRowsProvider: React.FC<{ children: React.ReactNode }> = ({
     [expandedRows]
   );
 
-  const tasksGroup = useMemo<TasksGroup>(
-    () =>
-      groupBy(
-        tasks.filter((item) =>
-          expandedRows.some((rowId) => rowId == item.shiftId)
-        ),
-        "shiftId"
-      ),
-    [tasks, expandedRows]
-  );
-
   const unfoldingRows = useMemo(() => {
     const rows: Record<string, ExpandedRows> = {};
 
-    Object.entries({ ...tasksGroup }).map(([shiftId, tasks]) => {
+    const expandedRowTasks: Tasks = new Map(
+      [...cloneDeep(fakeTasks)].filter(([shiftId]) =>
+        expandedRows.some((id) => id === shiftId)
+      )
+    );
+
+    [...expandedRowTasks.entries()].map(([shiftId, tasks]) => {
       let offsets: Record<string, number> = {};
 
       // 1.2 сортируем таски каждого ресурса по времени
@@ -112,7 +105,7 @@ export const ExpandedRowsProvider: React.FC<{ children: React.ReactNode }> = ({
     });
 
     return rows;
-  }, [tasksGroup, expandedRows]);
+  }, [expandedRows, fakeTasks.size]);
 
   return (
     <ExpandedRowsContext.Provider

@@ -1,9 +1,10 @@
+import { TimelineTasks } from "@component/GUIResources/TimeLine/TimelineTasks";
 import { _baseExpandedRow, useExpandedRowsContext } from "@store/context/ExpandedRowsContext";
 import { IFakeResourceRecord, useFakeResourceRecord } from "@store/context/FakeResourceRecord";
 import { useGUIResourcesContext } from "@store/context/ResourcesAreaProvider";
 import { getMinutesInDay } from "@utils/time";
-import React from 'react';
-import { GridChildComponentProps, GridProps, VariableSizeGrid as Grid } from "react-window";
+import React, { memo } from 'react';
+import { areEqual, GridChildComponentProps, GridProps, VariableSizeGrid as Grid } from "react-window";
 
 type UnallocatedGridProps = Partial<GridProps> & {
   height: number,
@@ -41,15 +42,23 @@ export const UnallocatedGrid: React.FC<UnallocatedGridProps> = ({
   );
 };
 
-const ChartRow = ({
-  style,
-  data,
-  rowIndex,
-}: GridChildComponentProps<IFakeResourceRecord[]>) => (
-  <div className="row" style={style}>
-    <span>
-      {`resourceData.title: ${data[rowIndex]?.shift.id} \n ${data[rowIndex]?.shift.name}`}
-    </span>
-  </div>
-);
+const ChartRow = memo(({ columnIndex, style }: GridChildComponentProps) => {
+  const { unfoldingRows } = useExpandedRowsContext();
+  const { tasks } = useFakeResourceRecord();
+
+  const unallocatedTasks = tasks.get("unallocated") || [];
+
+  if (columnIndex > 0) return null;
+
+  return (
+    <div style={style}>
+      {unallocatedTasks.length && (
+        <TimelineTasks
+          tasks={unallocatedTasks}
+          offsets={unfoldingRows["unallocated"]?.taskOffsets}
+        />
+      )}
+    </div>
+  );
+}, areEqual);
 

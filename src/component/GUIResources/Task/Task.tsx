@@ -32,7 +32,7 @@ const style: CSSProperties = {
 export interface TaskProps {
   task: ITask;
   // todo не нужно все офсеты забирать, берем только относящейся к таске
-  offsets?: ExpandedRows["taskOffsets"];
+  offset?: number;
   type: TaskTypeString;
 }
 const getWidth = ({ planEndDate, planStartDate }: ITask) => {
@@ -41,21 +41,13 @@ const getWidth = ({ planEndDate, planStartDate }: ITask) => {
   return (diff * 2).toFixed(2);
 };
 
-const getPosition = (
-  task: ITask,
-  offsets: ExpandedRows["taskOffsets"] = {}
-): CSSProperties => {
-  // todo memo for css
-  const offsetTop = offsets[task.id] ?? 0;
+const getPosition = (task: ITask, offset: number): CSSProperties => ({
+  width: `${getWidth(task)}px`,
+  top: `${offset * 30}px`,
+  left: `${alignLeft(task)}px`,
+});
 
-  return {
-    width: `${getWidth(task)}px`,
-    top: `${offsetTop * 30}px`,
-    left: `${alignLeft(task)}px`,
-  };
-};
-
-export const Task: React.FC<TaskProps> = memo(({ task, type, offsets }) => {
+export const Task: React.FC<TaskProps> = memo(({ task, type, offset = 0 }) => {
   const { id, planEndDate, planStartDate } = task;
   const [{ opacity }, drag] = useDrag(() => ({
     type,
@@ -77,7 +69,7 @@ export const Task: React.FC<TaskProps> = memo(({ task, type, offsets }) => {
         ...style,
         opacity,
         left: `${diff}px`,
-        ...getPosition(task, offsets),
+        ...getPosition(task, offset),
       }}
       data-testid="box"
     >

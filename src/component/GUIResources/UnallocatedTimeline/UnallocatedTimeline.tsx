@@ -1,7 +1,8 @@
-import { UnallocatedAside } from "@component/GUIResources/UnallocatedTimeline/UnallocatedAside";
 import { UnallocatedGrid } from "@component/GUIResources/UnallocatedTimeline/UnallocatedGrid";
 import AutoSizer from "react-virtualized-auto-sizer";
 import "../TimeLine/Timeline.css";
+import { UnallocatedAside } from "./UnallocatedAside";
+
 
 export const UnallocatedTimeline = () => {
   return (
